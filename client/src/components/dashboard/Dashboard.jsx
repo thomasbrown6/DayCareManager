@@ -6,20 +6,21 @@ import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
 import Experience from './Experience';
 import Education from './Education';
-import { getCurrentProfile, deleteAccount } from '../../actions/profile';
+import Daycare from './Daycare';
+import { getUserDaycares, deleteDaycare } from '../../actions/daycare';
 
 const Dashboard = ({
-  getCurrentProfile,
-  deleteAccount,
+  getUserDaycares,
+  deleteDaycare,
   auth: { user },
-  profile: { profile, loaded }
+  daycare: { daycares, loaded }
 }) => {
   useEffect(() => {
-    getCurrentProfile();
-  }, [getCurrentProfile]);
+    getUserDaycares();
+  }, [getUserDaycares]);
 
 
-  return !loaded && profile == null ? (
+  return !loaded && daycares == null ? (
     <Spinner />
   ) : (
     <Fragment>
@@ -27,19 +28,18 @@ const Dashboard = ({
       <p className='lead'>
         <i className='fas fa-user'> Welcome {user && user.name}</i>
       </p>
-      {profile != null ? (
+      {daycares != null && daycares.length > 0 ? (
         <Fragment>
           <DashboardActions />
-          <Experience experience={profile.experience} />
-          <Education education={profile.education} />
-          <div className="my-2"><button onClick={() => deleteAccount()} className="btn btn-danger">
-            <i className="fas fa-user-minus">Delete My Account</i></button></div>
+          {/* <div className="my-2"><button onClick={() => deleteDaycare()} className="btn btn-danger">
+            <i className="fas fa-user-minus">Delete My Account</i></button></div> */}
+            <Daycare daycare={daycares} />
         </Fragment>
       ) : (
         <Fragment>
-          <p>You have not yet set up a profile, please add some info</p>
-          <Link to='/create-profile' className='btn btn-primary my-1'>
-            Create Profile
+          <p>You have not yet set up any daycare centers yet, please add one to get started</p>
+          <Link to='/create-daycare' className='btn btn-primary my-1'>
+            Create Daycare
           </Link>
         </Fragment>
       )}
@@ -48,15 +48,15 @@ const Dashboard = ({
 };
 
 Dashboard.propTypes = {
-  getCurrentProfile: PropTypes.func.isRequired,
-  deleteAccount: PropTypes.func.isRequired,
+  getUserDaycares: PropTypes.func.isRequired,
+  deleteDaycare: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+  daycare: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile
+  daycare: state.daycare
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(Dashboard);
+export default connect(mapStateToProps, { getUserDaycares, deleteDaycare })(Dashboard);
