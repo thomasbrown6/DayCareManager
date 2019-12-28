@@ -78,9 +78,13 @@ img {
   color: var(--dark-color);
 }
 
+.primary {
+  background: var(--primary-color);
+}
+
 /* Border */
 .border-bottom-1 {
-  border-bottom:  1px solid black;
+  border-bottom: 1px solid black;
 }
 
 /* Padding */

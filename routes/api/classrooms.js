@@ -47,17 +47,16 @@ router.get('/daycare/:id/students', auth, async (req, res) => {
     }
 
     let students;
-      students = classrooms.map(classes => {
-      if(classes.students != null && classes.students.length > 0) {
-        students = classes.students
+    students = classrooms.map(classes => {
+      if (classes.students != null && classes.students.length > 0) {
+        students = classes.students;
       }
     });
 
-    console.log(students)
-    if(students === null) {
+    console.log(students);
+    if (students === null) {
       students = { msg: 'no students in daycare' };
     }
-
 
     return res.status(200).json(students);
   } catch (err) {
@@ -70,39 +69,39 @@ router.get('/daycare/:id/students', auth, async (req, res) => {
 // @desc    Create a classroom for daycare
 // @access  Private
 router.post(
-    '/daycare/:daycare_id',
+  '/daycare/:daycare_id',
+  [
+    auth,
     [
-        auth,
-        [
-            check('title', 'Have to have a name for classroom ')
-                .not()
-                .isEmpty()
-        ]
-    ],
-    async (req, res) => {
-        try {
-            const daycare = await Daycare.findById(req.params.daycare_id);
+      check('title', 'Have to have a name for classroom ')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    try {
+      const daycare = await Daycare.findById(req.params.daycare_id);
 
-            if (!daycare) {
-                return res.status(404).json({ msg: 'Daycare not found' });
-            }
+      if (!daycare) {
+        return res.status(404).json({ msg: 'Daycare not found' });
+      }
 
-            console.log('got daycare')
+      console.log('got daycare');
 
-            const newClassroom = new Classroom({
-                user: req.user.id,
-                daycare: req.params.daycare_id,
-                title: req.body.title,
-                description: req.body.description
-            });
+      const newClassroom = new Classroom({
+        user: req.user.id,
+        daycare: req.params.daycare_id,
+        title: req.body.title,
+        description: req.body.description
+      });
 
-            await newClassroom.save();
-            return res.status(200).json(newClassroom);
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send('Server Error');
-        }
+      await newClassroom.save();
+      return res.status(200).json(newClassroom);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
     }
+  }
 );
 
 // @route   GET api/classrooms/:daycare_id
@@ -126,7 +125,7 @@ router.get('/:daycare_id', auth, async (req, res) => {
 });
 
 // @route   DELETE api/classrooms/:id
-// @desc    Get classroom 
+// @desc    Get classroom
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
   try {
@@ -145,9 +144,8 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-
 // @route   POST api/classrooms/student/:id
-// @desc    Create a classroom for daycare
+// @desc    Create a student for classroom
 // @access  Private
 router.post(
   '/student/:id',
