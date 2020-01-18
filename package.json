@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Daycare management app",
   "main": "server.js",
+  "engines": {
+    "node": ">=0.12"
+  },
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
