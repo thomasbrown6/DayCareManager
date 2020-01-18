@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { getDaycareById } from '../../actions/daycare';
-import { getClassroomsByDaycare, addStudent } from '../../actions/classroom';
+import {
+  getClassroomsByDaycare,
+  addStudent,
+  getClassroomById
+} from '../../actions/classroom';
 import DaycareTable from './DaycareTable';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -28,6 +32,12 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Fab from '@material-ui/core/Fab';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDownCircleOutlined';
+import Collapse from '@material-ui/core/Collapse';
+import AddStudent from '../student/AddStudent';
+import ViewStudentsMin from '../student/ViewStudentsMin';
+import AddClassroom from '../classroom/AddClassroom';
+import ViewClassroomsMin from '../classroom/ViewClassroomsMin';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -59,6 +69,7 @@ const useStyles = makeStyles(theme => ({
 
 const Daycare = ({
   getDaycareById,
+  getClassroomById,
   getClassroomsByDaycare,
   addStudent,
   daycare: { daycare, loaded },
@@ -70,11 +81,22 @@ const Daycare = ({
     class_id: '',
     firstname: '',
     lastname: '',
-    parentname: '',
+    parentname1: '',
+    parentname2: '',
     formClassroom: 'Pick Classroom'
   });
 
-  const { class_id, firstname, lastname, parentname, formClassroom } = formData;
+  const [displayStudentForm, toggleStudentForm] = useState(false);
+  const [displayClassForm, toggleClassForm] = useState(false);
+
+  const {
+    class_id,
+    firstname,
+    lastname,
+    parentname1,
+    parentname2,
+    formClassroom
+  } = formData;
 
   const onChange = e => {
     if (e.target.name === 'formClassroom') {
@@ -97,9 +119,14 @@ const Daycare = ({
     console.log(formData);
   };
 
-  const onSubmit = e => {
+  const selectClassroom = (e, c_id, name) => {
     e.preventDefault();
-    addStudent(formData);
+    getClassroomById(match.params.id, c_id);
+
+    setFormData({
+      ...formData,
+      formClassroom: name
+    });
   };
 
   const classes = useStyles();
@@ -134,93 +161,59 @@ const Daycare = ({
                 <Grid item xs={6}>
                   <Card className={classes.card}>
                     <CardHeader title='Classrooms' />
-                    <List>
-                      {classrooms.map((classes, index) => {
-                        if (index < 5) {
-                          return (
-                            <ListItem
-                              key={classes._id}
-                              style={{
-                                background: '#f4f4f4'
-                              }}
-                            >
-                              <ListItemText primary={classes.title} />
-                              <IconButton
-                                style={{ margin: '0 1rem' }}
-                                edge='end'
-                              >
-                                <GrainIcon />
-                              </IconButton>
-                              <IconButton edge='end' aria-label='delete'>
-                                <DeleteIcon />
-                              </IconButton>
-                            </ListItem>
-                          );
-                        }
-                      })}
-                    </List>
+                    <ViewClassroomsMin
+                      daycare_id={daycare._id}
+                      classrooms={classrooms}
+                    />
                   </Card>
                 </Grid>
-                <Grid item xs={6}>
-                  <Card className={classes.card}>
-                    <CardHeader title='Add Student' />
-                  </Card>
-                  <FormControl
-                    className={classes.formControl}
-                    onSubmit={e => onSubmit(e)}
-                  >
-                    <TextField
-                      name='firstname'
-                      value={firstname}
-                      onChange={e => onChange(e)}
-                      id='standard-basic'
-                      label='First Name'
-                    />
-                    <TextField
-                      name='lastname'
-                      value={lastname}
-                      onChange={e => onChange(e)}
-                      id='standard-basic'
-                      label='Last Name'
-                    />
-                    <TextField id='standard-basic' label='Parent Full Name' />
-                    <Select
-                      id={class_id}
-                      name={'formClassroom'}
-                      value={formClassroom}
-                      onChange={e => onChange(e)}
-                      displayEmpty
-                      className={classes.selectEmpty}
-                    >
-                      <MenuItem value='Pick Classroom' disabled>
-                        Pick Classroom
-                      </MenuItem>
-                      {classrooms.map(_class => {
-                        return (
-                          <MenuItem
-                            value={_class.title}
-                            name='formClassroom'
-                            id={_class._id}
-                          >
-                            {_class.title}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                    <FormHelperText>
-                      Choose a classroom for the student
-                    </FormHelperText>
-                    <Fab
-                      variant='extended'
-                      className='primary'
-                      style={{ marginTop: '10px', background: '#17a2b8' }}
-                      onClick={onSubmit}
-                    >
-                      <SaveAltIcon />
-                      Add
-                    </Fab>
-                  </FormControl>
-                </Grid>
+                {classroom && (
+                  <Fragment>
+                    <Grid item xs={6}>
+                      <Card className={classes.card}>
+                        <CardHeader
+                          title={classroom ? `${classroom.name} Students` : ''}
+                        />
+                        <ViewStudentsMin
+                          classroom={classroom}
+                          daycare_id={daycare._id}
+                          class_id={classroom._id}
+                        />
+                      </Card>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Card className={classes.card}>
+                        <CardHeader
+                          title={
+                            displayClassForm
+                              ? 'Classroom'
+                              : 'Quick add classroom'
+                          }
+                          action={<ArrowDropDownIcon />}
+                          onClick={() => toggleClassForm(!displayClassForm)}
+                        ></CardHeader>
+                      </Card>
+                      <Collapse in={displayClassForm}>
+                        <AddClassroom daycare={daycare} />
+                      </Collapse>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                      <Card className={classes.card}>
+                        <CardHeader
+                          title={
+                            displayStudentForm ? 'Student' : 'Quick add student'
+                          }
+                          action={<ArrowDropDownIcon />}
+                          onClick={() => toggleStudentForm(!displayStudentForm)}
+                        ></CardHeader>
+                      </Card>
+                      <Collapse in={displayStudentForm}>
+                        <AddStudent daycare={daycare} />
+                      </Collapse>
+                    </Grid>
+                  </Fragment>
+                )}
               </Grid>
             </Fragment>
           )}
@@ -232,6 +225,7 @@ const Daycare = ({
 
 Daycare.propTypes = {
   getDaycareById: PropTypes.func.isRequired,
+  getClassroomById: PropTypes.func.isRequired,
   getClassroomsByDaycare: PropTypes.func.isRequired,
   addStudent: PropTypes.func.isRequired,
   daycare: PropTypes.object.isRequired,
@@ -248,5 +242,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getDaycareById,
   addStudent,
-  getClassroomsByDaycare
+  getClassroomsByDaycare,
+  getClassroomById
 })(Daycare);

@@ -44,7 +44,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         classroom: null,
-        repos: [],
         loaded: true,
         error: null
       };

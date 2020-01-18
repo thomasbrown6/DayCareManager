@@ -1,6 +1,8 @@
 /* Global Styles */
 :root {
-  --primary-color: #17a2b8;
+  --primary-color: #1976d2;
+  /* --primary-color: #17a2b8; */
+  --secondary-color: #2684ff;
   --dark-color: #343a40;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
@@ -21,13 +23,46 @@ body {
   color: #333;
 }
 
+header.MuiAppBar-colorPrimary {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+}
+
+h2.MuiTypography-colorPrimary {
+  color: var(--primary-color);
+}
+
+div.MuiDrawer-paper {
+  background-color: var(--light-color);
+}
+
+button.MuiButton-containedPrimary {
+  color: #fff;
+  background-color: var(--primary-color);
+}
+
 .font-bold {
   font-weight: bold;
 }
 
 a {
-  color: var(--primary-color);
+  color: var(--secondary-color);
   text-decoration: none;
+}
+
+a.nav-item {
+  color: white;
+  text-decoration: none;
+}
+
+a.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0 5px;
+}
+
+a.nav-link:hover {
+  color: var(--secondary-color);
 }
 
 ul {
@@ -61,6 +96,12 @@ img {
   margin-bottom: 1rem;
 }
 
+.medium {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
 .lead {
   font-size: 1.5rem;
   margin-bottom: 1rem;
@@ -70,8 +111,16 @@ img {
   text-align: center;
 }
 
+.center {
+  text-align: center;
+}
+
 .text-primary {
   color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
 }
 
 .text-dark {
@@ -80,6 +129,10 @@ img {
 
 .primary {
   background: var(--primary-color);
+}
+
+.secondary {
+  background: var(--secondary-color);
 }
 
 /* Border */
@@ -112,6 +165,9 @@ img {
 .py-3 {
   padding: 3rem 0;
 }
+.px-1 {
+  padding: 0 2rem;
+}
 
 /* Margin */
 .m {
@@ -143,6 +199,15 @@ img {
 }
 .ml-1 {
   margin: 0 1rem;
+}
+
+.f-right {
+  float: right;
+}
+
+/* hover */
+.finger:hover {
+  cursor: pointer;
 }
 
 .btn {

@@ -12,10 +12,32 @@ import {
 // Get profile by Id
 export const getClassroomsByDaycare = id => async dispatch => {
   try {
-    const res = await axios.get(`/api/classrooms/daycare/${id}`);
+    const res = await axios.get(`/api/daycares/classrooms/${id}`);
 
     dispatch({
       type: GET_CLASSROOMS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: CLASSROOM_ERROR,
+      payload: { msg: err.response, status: err.response.status }
+    });
+  }
+};
+
+// Get classroom by Id
+export const getClassroomById = (daycare_id, class_id) => async dispatch => {
+  console.log(`GET: /api/daycares/classrooms/${daycare_id}/${class_id}`);
+  try {
+    const res = await axios.get(
+      `/api/daycares/classrooms/${daycare_id}/${class_id}`
+    );
+
+    console.log(`Response: ${res.data}`);
+
+    dispatch({
+      type: GET_CLASSROOM,
       payload: res.data
     });
   } catch (err) {
@@ -44,7 +66,7 @@ export const getClassroomsByDaycare = id => async dispatch => {
 // };
 
 // Add Classroom
-export const addClassroom = (formData, history) => async dispatch => {
+export const addClassroom = (formData, id) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -52,21 +74,24 @@ export const addClassroom = (formData, history) => async dispatch => {
       }
     };
 
-    const res = await axios.put('/api/daycare/classroom', formData, config);
+    const res = await axios.put(
+      `/api/daycares/classrooms/${id}`,
+      formData,
+      config
+    );
 
     dispatch({
-      type: UPDATE_CLASSROOM,
+      type: GET_CLASSROOMS,
       payload: res.data
     });
 
     dispatch(setAlert('Classroom Added', 'success'));
-    history.push('/dashboard');
   } catch (err) {
-    // const errors = err.response.data.errors;
+    const errors = err.response.data.errors;
 
-    // if (errors) {
-    //   errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    // }
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    }
 
     dispatch({
       type: CLASSROOM_ERROR,
@@ -75,8 +100,41 @@ export const addClassroom = (formData, history) => async dispatch => {
   }
 };
 
+// Delete classroom
+export const deleteClassroom = (daycare_id, class_id) => async dispatch => {
+  if (window.confirm('Are you sure you want to delete your classroom?')) {
+    try {
+      const res = await axios.delete(
+        `/api/daycares/classrooms/${daycare_id}/${class_id}`
+      );
+
+      dispatch({ type: CLEAR_CLASSROOM });
+      dispatch({ type: GET_CLASSROOMS, payload: res.data });
+
+      dispatch(setAlert('Classroom Removed', 'primary'));
+    } catch (err) {
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      }
+      dispatch({
+        type: CLASSROOM_ERROR,
+        payload: {
+          msg: err.response,
+          status: err.response.status
+        }
+      });
+    }
+  }
+};
+
 // Add Student
-export const addStudent = formData => async dispatch => {
+export const addStudent = (
+  formData,
+  daycare_id,
+  class_id
+) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -86,12 +144,16 @@ export const addStudent = formData => async dispatch => {
 
     //const class = await axios.get('/api');
 
-    const res = await axios.put('/api/classrooms/student', formData, config);
+    const res = await axios.put(
+      `/api/daycares/classrooms/students/${daycare_id}/${class_id}`,
+      formData,
+      config
+    );
 
-    dispatch({
-      type: UPDATE_CLASSROOM,
-      payload: res.data
-    });
+    // dispatch({
+    //   type: UPDATE_CLASSROOM,
+    //   payload: res.data
+    // });
 
     dispatch(setAlert('Student Added', 'success'));
   } catch (err) {
@@ -109,39 +171,25 @@ export const addStudent = formData => async dispatch => {
 };
 
 // Delete student
-export const deleteStudent = id => async dispatch => {
-  try {
-    const res = await axios.delete(`/api/classroom/student/${id}`);
-
-    dispatch({
-      type: UPDATE_CLASSROOM,
-      payload: res.data
-    });
-
-    dispatch(setAlert('Student Removed', 'success'));
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    }
-    dispatch({
-      type: CLASSROOM_ERROR,
-      payload: { msg: err.response, status: err.response.status }
-    });
-  }
-};
-
-// Delete classroom
-export const deleteClassroom = () => async dispatch => {
-  if (window.confirm('Are you sure you want to delete your classroom?')) {
+export const deleteStudent = (
+  daycare_id,
+  class_id,
+  stud_id
+) => async dispatch => {
+  if (window.confirm('Are you sure you want to delete student?')) {
     try {
-      await axios.delete('/api/classroom');
+      const res = await axios.delete(
+        `/api/daycares/classrooms/${daycare_id}/${class_id}/${stud_id}`
+      );
+      dispatch({
+        type: CLEAR_CLASSROOM
+      });
+      dispatch({
+        type: UPDATE_CLASSROOM,
+        payload: res.data
+      });
 
-      dispatch({ type: CLEAR_CLASSROOM });
-      dispatch({ type: DELETE_CLASSROOM });
-
-      dispatch(setAlert('Your daycare has been deleted'));
+      dispatch(setAlert('Student Removed', 'success'));
     } catch (err) {
       const errors = err.response.data.errors;
 
@@ -150,10 +198,7 @@ export const deleteClassroom = () => async dispatch => {
       }
       dispatch({
         type: CLASSROOM_ERROR,
-        payload: {
-          msg: err.response,
-          status: err.response.status
-        }
+        payload: { msg: err.response, status: err.response.status }
       });
     }
   }

@@ -2,9 +2,8 @@ import {
   GET_STUDENTS,
   STUDENTS_ERROR,
   CLEAR_STUDENTS,
-  UPDATE_STUDENTS
+  UPDATE_STUDENT
 } from '../actions/types';
-
 
 const initialState = {
   student: null,
@@ -13,13 +12,12 @@ const initialState = {
   error: {}
 };
 
-
 export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
     case GET_STUDENTS:
-    case UPDATE_STUDENTS:
+    case UPDATE_STUDENT:
       return {
         ...state,
         student: payload,

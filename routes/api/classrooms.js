@@ -3,152 +3,153 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
-const Classroom = require('../../models/Classroom');
 const Daycare = require('../../models/Daycare');
-const User = require('../../models/User');
 
-// @route   GET /api/classrooms/daycare/:id
-// @desc    Get all classrooms for daycare
+// @route   POST api/daycares/classrooms/:id
+// @desc    Add a classroom to daycare
 // @access  Private
-router.get('/daycare/:id', auth, async (req, res) => {
-  try {
-    const classrooms = await Classroom.find({
-      daycare: req.params.id,
-      user: req.user.id
-    }).sort({ title: 1 });
-
-    if (!classrooms || classrooms.length == 0) {
-      return res
-        .status(400)
-        .json({ msg: 'There are no classrooms for this user' });
-    }
-
-    return res.status(200).json(classrooms);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route   GET /api/classrooms/daycare/:id/students
-// @desc    Get all students for daycare
-// @access  Private
-router.get('/daycare/:id/students', auth, async (req, res) => {
-  try {
-    const classrooms = await Classroom.find({
-      daycare: req.params.id,
-      user: req.user.id
-    }).sort({ title: 1 });
-
-    if (!classrooms || classrooms.length == 0) {
-      return res
-        .status(400)
-        .json({ msg: 'There are no classrooms for this user' });
-    }
-
-    let students;
-    students = classrooms.map(classes => {
-      if (classes.students != null && classes.students.length > 0) {
-        students = classes.students;
-      }
-    });
-
-    console.log(students);
-    if (students === null) {
-      students = { msg: 'no students in daycare' };
-    }
-
-    return res.status(200).json(students);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route   POST api/classrooms/daycare/:daycare_id
-// @desc    Create a classroom for daycare
-// @access  Private
-router.post(
-  '/daycare/:daycare_id',
+router.put(
+  '/classrooms/:id',
   [
     auth,
     [
-      check('title', 'Have to have a name for classroom ')
+      check('name', 'Have to have a name for classroom ')
         .not()
         .isEmpty()
     ]
   ],
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, description } = req.body;
+
+    const newClass = {
+      user: req.user.id,
+      daycare: req.params.id,
+      name,
+      description
+    };
+
     try {
-      const daycare = await Daycare.findById(req.params.daycare_id);
+      const daycare = await Daycare.findById(req.params.id);
 
       if (!daycare) {
         return res.status(404).json({ msg: 'Daycare not found' });
       }
 
-      console.log('got daycare');
+      daycare.classrooms.unshift(newClass);
 
-      const newClassroom = new Classroom({
-        user: req.user.id,
-        daycare: req.params.daycare_id,
-        title: req.body.title,
-        description: req.body.description
-      });
+      await daycare.save();
 
-      await newClassroom.save();
-      return res.status(200).json(newClassroom);
+      return res.status(200).json(daycare.classrooms);
     } catch (err) {
+      if (err.kind == 'ObjectId') {
+        return res.status(404).json({ msg: 'Daycare not found by id' });
+      }
+
       console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
 );
 
-// @route   GET api/classrooms/:daycare_id
+// @route   GET /api/daycares/classrooms/:id
 // @desc    Get all classrooms for daycare
 // @access  Private
-router.get('/:daycare_id', auth, async (req, res) => {
+router.get('/classrooms/:id', auth, async (req, res) => {
   try {
-    const classrooms = await Classroom.find({ daycare: req.params.daycare_id });
+    const daycare = await Daycare.findById(req.params.id);
 
-    if (!classrooms) {
-      return res
-        .status(400)
-        .json({ msg: 'Did not get any classrooms for daycare' });
-    }
+    if (!daycare) return res.status(404).json({ msg: 'Daycare not found' });
 
-    return res.status(200).json(classrooms);
+    if (!daycare.classrooms || daycare.classrooms.length === 0)
+      return res.status(404).json({ msg: 'no classrooms for daycare' });
+
+    return res.status(200).json(daycare.classrooms);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
 
-// @route   DELETE api/classrooms/:id
-// @desc    Get classroom
+// @route   GET /api/daycares/classrooms/:daycare_id/:class_id
+// @desc    Get classroom by id
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.get('/classrooms/:daycare_id/:class_id', auth, async (req, res) => {
   try {
-    const classroom = await Classroom.findById(req.params.id);
+    const daycare = await Daycare.findById(req.params.daycare_id);
+
+    if (!daycare) return res.status(404).json({ msg: 'Daycare not found' });
+
+    if (!daycare.classrooms || daycare.classrooms.length === 0)
+      return res.status(404).json({ msg: 'no classrooms for daycare' });
+
+    const classroom = daycare.classrooms.find(
+      x => x.id === req.params.class_id
+    );
+
+    if (!classroom)
+      return res.status(404).json({ msg: 'Classroom not found by id' });
+
+    return res.status(200).json(classroom);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(404).json({ msg: 'Daycare or Classroom not found' });
+    }
+
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   DELETE api/daycares/classrooms/:daycare_id/:class_id
+// @desc    Delete classroom from daycare
+// @access  Private
+router.delete('/classrooms/:daycare_id/:class_id', auth, async (req, res) => {
+  try {
+    const daycare = await Daycare.findById(req.params.daycare_id);
+
+    if (!daycare) {
+      return res.status(404).json({ msg: 'Daycare not found' });
+    }
+
+    if (daycare.classrooms.length === 0) {
+      return res
+        .status(404)
+        .json({ msg: 'Daycare does not have any classrooms' });
+    }
+
+    const classroom = daycare.classrooms.find(
+      x => x.id === req.params.class_id
+    );
 
     if (!classroom) {
-      return res.status(400).json({ msg: 'Did not find classroom' });
+      return res.status(404).json({ msg: 'No classroom found by this id' });
     }
+    // Get remove index
+    const removeIndex = daycare.classrooms
+      .map(item => item.id)
+      .indexOf(req.params.class_id);
 
-    await Classroom.findOneAndRemove({ _id: classroom.id });
+    await daycare.classrooms.splice(removeIndex, 1);
 
-    return res.status(200).json(classrooms);
+    await daycare.save();
+
+    res.json(daycare.classrooms);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
 
-// @route   POST api/classrooms/student/:id
-// @desc    Create a student for classroom
+// @route   PUT api/daycares/classrooms/students/:daycare_id/class_id
+// @desc    Add a student to classroom
 // @access  Private
-router.post(
-  '/student/:id',
+router.put(
+  '/classrooms/students/:daycare_id/:class_id',
   [
     auth,
     [
@@ -158,30 +159,183 @@ router.post(
       check('lastname', 'Have to have a last name for student')
         .not()
         .isEmpty(),
-      check('parents', 'Have to have a parent for child')
+      check('parentname1', 'Student must have at least one parent')
         .not()
         .isEmpty()
     ]
   ],
   async (req, res) => {
-    try {
-      const classroom = await Classroom.findById(req.params.id);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-      if (!classroom) {
-        return res.status(404).json({ msg: 'Classroom not found' });
+    const { firstname, lastname, parentname1, parentname2 } = req.body;
+
+    const newStudent = {
+      user: req.user.id,
+      daycare: req.params.daycare_id,
+      classroom: req.params.class_id,
+      firstname,
+      lastname,
+      parentname1,
+      parentname2
+    };
+
+    try {
+      let daycare = await Daycare.findById(req.params.daycare_id);
+
+      if (!daycare) {
+        return res.status(404).json({ msg: 'Daycare not found' });
       }
 
-      console.log('got daycare');
+      const classrooms = daycare.classrooms;
 
-      const newClassroom = new Classroom({
-        user: req.user.id,
-        daycare: req.params.daycare_id,
-        title: req.body.title,
-        description: req.body.description
+      let classroom = classrooms.find(x => x.id === req.params.class_id);
+
+      let duplicate = classroom.students.find(
+        x => x.firstname === firstname && x.lastname === lastname
+      );
+      if (duplicate) {
+        return res.status(400).json({ msg: 'Student already exists' });
+      }
+
+      classroom.students.push(newStudent);
+
+      const updated = await daycare.save();
+
+      return res.status(200).json(updated);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route   GET /api/daycares/classrooms/:id/students/
+// @desc    Get all students for classroom
+// @access  Private
+router.get(
+  '/classrooms/students/:daycare_id/:class_id',
+  auth,
+  async (req, res) => {
+    try {
+      const daycare = await Daycare.findById(req.params.daycare_id);
+
+      if (!daycare) return res.status(404).json({ msg: 'Daycare not found' });
+
+      if (!daycare.classrooms || daycare.classrooms.length === 0)
+        return res.status(404).json({ msg: 'no classrooms for daycare' });
+
+      if (
+        !daycare.classrooms.students ||
+        daycare.classrooms.students.length === 0
+      )
+        return res.status(404).json({ msg: 'no students for daycare' });
+
+      return res.status(200).json(daycare.classrooms);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route   GET /api/daycares/:id/students/
+// @desc    Get all students for daycare
+// @access  Private
+router.get('/:id/students', auth, async (req, res) => {
+  try {
+    const daycare = await Daycare.findById(req.params.id);
+
+    if (!daycare) return res.status(404).json({ msg: 'Daycare not found' });
+
+    if (!daycare.classrooms || daycare.classrooms.length === 0)
+      return res.status(404).json({ msg: 'no classrooms for daycare' });
+
+    let studentcount = 0;
+    daycare.classrooms.forEach(classroom => {
+      classroom.students.forEach(student => {
+        studentcount++;
       });
+    });
+    if (studentcount === 0)
+      return res.status(404).json({ msg: 'no students for daycare' });
 
-      await newClassroom.save();
-      return res.status(200).json(newClassroom);
+    let students = [];
+    daycare.classrooms.forEach(classroom => {
+      classroom.students.forEach(student => {
+        students.push(student);
+      });
+    });
+
+    const compare = (a, b) => {
+      if (a.lastname < b.lastname) {
+        return -1;
+      }
+      if (a.lastname > b.lastname) {
+        return 1;
+      }
+      return 0;
+    };
+
+    students.sort(compare);
+
+    return res.status(200).json(students);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   DELETE api/daycares/classrooms/students/:daycare_id/:class_id/:student_id
+// @desc    Delete student from classroom
+// @access  Private
+router.delete(
+  '/classrooms/:daycare_id/:class_id/:stud_id',
+  auth,
+  async (req, res) => {
+    try {
+      const daycare = await Daycare.findById(req.params.daycare_id);
+
+      if (!daycare) {
+        return res.status(404).json({ msg: 'Daycare not found' });
+      }
+
+      if (daycare.classrooms.length === 0) {
+        return res
+          .status(404)
+          .json({ msg: 'Daycare does not have any classrooms' });
+      }
+
+      const classroom = daycare.classrooms.find(
+        x => x.id === req.params.class_id
+      );
+
+      if (!classroom) {
+        return res.status(404).json({ msg: 'No classroom found by this id' });
+      }
+
+      // Get classroom index
+      const classIndex = daycare.classrooms
+        .map(item => item.id)
+        .indexOf(req.params.class_id);
+
+      const student = classroom.students.find(x => x.id === req.params.stud_id);
+
+      if (!student) {
+        return res.status(404).json({ msg: 'No student found by this id' });
+      }
+      // Get remove index
+      const removeIndex = classroom.students
+        .map(item => item.id)
+        .indexOf(req.params.stud_id);
+
+      await daycare.classrooms[classIndex].students.splice(removeIndex, 1);
+
+      await daycare.save();
+
+      res.json({ classroom });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

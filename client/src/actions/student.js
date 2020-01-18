@@ -11,7 +11,7 @@ import {
 // Get students for daycare
 export const getStudentsForDaycare = id => async dispatch => {
   try {
-    const res = await axios.get(`/api/classrooms/daycare/${id}/students`);
+    const res = await axios.get(`/api/daycares/${id}/students`);
 
     dispatch({
       type: GET_STUDENTS,

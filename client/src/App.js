@@ -16,6 +16,7 @@ import CreateDaycare from './components/daycare-forms/CreateDaycare';
 import Daycare from './components/daycare/Daycare';
 import AddExperience from './components/profile-forms/AddExperience';
 import AddEducation from './components/profile-forms/AddEducation';
+import AllStudents from './components/student/AllStudents';
 import PrivateRoute from './components/routing/PrivateRoute';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
@@ -78,6 +79,11 @@ const App = () => {
                 exact
                 path='/add-education'
                 component={AddEducation}
+              />
+              <PrivateRoute
+                exact
+                path='/all-students'
+                component={AllStudents}
               />
               <PrivateRoute exact path='/posts' component={Posts} />
               <PrivateRoute exact path='/posts/:id' component={Post} />
