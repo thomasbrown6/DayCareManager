@@ -12,7 +12,7 @@
     "client": "npm start --prefix client",
     "build": "npm build client",
     "dev": "concurrently \"nodemon server.js\" \"npm run client\"",
-    "azure": "npm start && npm client"
+    "azure": "npm install && npm install --prefix client && npm start"
   },
   "repository": {
     "type": "git",
