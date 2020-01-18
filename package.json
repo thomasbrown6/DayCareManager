@@ -11,9 +11,11 @@
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "build": "npm build client",
-    "dev": "concurrently \"nodemon server.js\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
-    "azure": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && node server"
+    "dev": "concurrently \"nodemon server.js\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasbrown6/DayCareManager.git"
   },
   "author": "Thomas Brown",
   "license": "ISC",
