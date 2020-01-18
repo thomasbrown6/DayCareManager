@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "material-table": "^1.55.0",
     "mongoose": "^5.7.12",
+    "node": "^13.6.0",
     "recharts": "^2.0.0-beta.1",
     "request": "^2.88.0"
   },
