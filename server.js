@@ -1,10 +1,9 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const connectDB = require('./config/cosmosdb');
 const path = require('path');
 
 const app = express();
 
-console.log('about to get config');
 //connect database
 connectDB();
 
