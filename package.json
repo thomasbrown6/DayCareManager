@@ -7,7 +7,7 @@
     "node": ">=0.12"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "npm install && npm run install && npm run build && node server.js",
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "build": "cd client && npm run build",
