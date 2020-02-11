@@ -19,6 +19,8 @@ import AddEducation from './components/profile-forms/AddEducation';
 import PrivateRoute from './components/routing/PrivateRoute';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
+import AllStudents from './components/student/AllStudents';
+import Classrooms from './components/classroom/Classrooms';
 
 //Redux
 import { Provider } from 'react-redux';
@@ -54,6 +56,8 @@ const App = () => {
                 path='/dashboard/daycare/:id'
                 component={Daycare}
               />
+                            <PrivateRoute exact path='/classrooms' component={Classrooms} />
+
               <PrivateRoute
                 exact
                 path='/create-profile'
@@ -78,6 +82,11 @@ const App = () => {
                 exact
                 path='/add-education'
                 component={AddEducation}
+              />
+              <PrivateRoute
+                exact
+                path='/all-students'
+                component={AllStudents}
               />
               <PrivateRoute exact path='/posts' component={Posts} />
               <PrivateRoute exact path='/posts/:id' component={Post} />

@@ -10,8 +10,7 @@ const DaycareSchema = new mongoose.Schema({
     required: true
   },
   website: {
-    type: String,
-    required: true
+    type: String
   },
   location: {
     type: String,

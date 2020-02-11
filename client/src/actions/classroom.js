@@ -26,22 +26,27 @@ export const getClassroomsByDaycare = id => async dispatch => {
   }
 };
 
-// Get profile by Id
-// export const getDaycareById = userId => async dispatch => {
-//     try {
-//         const res = await axios.get(`/api/daycare/user/${userId}`);
+// Get classroom by Id
+export const getClassroomById = (daycare_id, class_id) => async dispatch => {
+  console.log(`GET: /api/daycares/classrooms/${daycare_id}/${class_id}`);
+  try {
+    const res = await axios.get(
+      `/api/daycares/classrooms/${daycare_id}/${class_id}`
+    );
 
-//         dispatch({
-//             type: GET_DAYCARE,
-//             payload: res.data
-//         });
-//     } catch (err) {
-//         dispatch({
-//             type: CLASSROOM_ERROR,
-//             payload: { msg: err.response, status: err.response.status }
-//         });
-//     }
-// };
+    console.log(`Response: ${res.data}`);
+
+    dispatch({
+      type: GET_CLASSROOM,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: CLASSROOM_ERROR,
+      payload: { msg: err.response, status: err.response.status }
+    });
+  }
+};
 
 // Add Classroom
 export const addClassroom = (formData, history) => async dispatch => {
