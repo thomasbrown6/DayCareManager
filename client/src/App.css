@@ -10,6 +10,7 @@
   --danger-color: #dc3545;
   --success-color: #28a745;
   --highlight-color: #ce1f1f;
+  --babyblue: rgb(23, 162, 184);
   --font-color: #fff;
 }
 
@@ -24,12 +25,11 @@ html {
 }
 
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  background-color: #343a40!important;
+  background-color: #343a40 !important;
   color: var(--font-color);
-  height: 100%;
 }
 
 header.MuiAppBar-colorPrimary {
@@ -42,37 +42,70 @@ h1.MuiTypography-h5 {
   color: var(--font-color);
 }
 
-div.MuiDrawer-paper {
-  background-color: var(--light-color);
+div.gray {
+  color: #fff;
+  background-color: gray !important;
 }
 
-button.MuiButton-containedPrimary {
-  color: #fff;
+.MuiListItem-root:hover {
+  opacity: 0.8;
   background-color: var(--tricary-color);
+}
+
+button.MuiButton-containedPrimary,
+div.MuiDrawer-paper,
+div.makeStyles-paper-26,
+div.tricary {
+  color: #fff;
+  background-color: var(--tricary-color) !important;
 }
 
 button.MuiButton-containedPrimary:hover {
   color: #fff;
-  background-color: var(--primary-color);
+  opacity: 0.8;
+  background-color: var(--tricary-color);
 }
 
 div.MuiInputBase-root,
 p.MuiTypography-root,
 span.MuiTypography-root,
 label.MuiFormLabel-root,
-svg.MuiSvgIcon-root {
-  color: var(--font-color);
+svg.MuiSvgIcon-root,
+div.MuiPaper-root,
+th.MuiTableCell-head,
+span.MuiTableSortLabel-root,
+th.MuiTableCell-body,
+td.MuiTableCell-body {
+  color: var(--font-color) !important;
+}
+
+div.MuiTableContainer-root {
+  min-height: 400px;
 }
 
 fieldset.MuiOutlinedInput-notchedOutline:hover {
   border-color: var(--primary-color);
-} 
+}
 
 fieldset.MuiOutlinedInput-notchedOutline,
 input::-webkit-input-placeholder {
   border-color: var(--font-color);
   color: var(--font-color);
-} 
+}
+
+input#email,
+input#password {
+  background-color: var(--primary-color) !important;
+  color: var(--font-color) !important;
+}
+
+h6.MuiTypography-colorTextSecondary {
+  color: var(--font-color);
+}
+
+p.MuiFormHelperText-root {
+  color: var(--font-color);
+}
 
 .font-bold {
   font-weight: bold;
@@ -98,12 +131,20 @@ a.nav-link:hover {
   color: var(--secondary-color);
 }
 
+nav.MuiList-root {
+  background-color: var(--tricary-color);
+}
+
 ul {
   list-style: none;
 }
 
 img {
   width: 100%;
+}
+
+ul.MuiList-root > li.MuiListItem-root {
+  background-color: var(--tricary-color) !important;
 }
 
 /* Utilities */
@@ -116,7 +157,23 @@ img {
   margin-bottom: 3rem;
 }
 
+.wrapper {
+}
+.ft-l {
+  float: left;
+}
+
+.ft-r {
+  float: right;
+}
+
 /* Text Styles*/
+.header {
+  font-size: 3rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+
 .x-large {
   font-size: 4rem;
   line-height: 1.2;
@@ -177,6 +234,15 @@ img {
   border-bottom: 1px solid black;
 }
 
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Width */
+.w-100 {
+  width: 100%;
+}
+
 /* Padding */
 .p {
   padding: 0.5rem;
@@ -231,11 +297,26 @@ img {
 .my-3 {
   margin: 3rem 0;
 }
+.mx-1 {
+  margin: 0 1rem;
+}
+.mx-2 {
+  margin: 0 2rem;
+}
+.mx-3 {
+  margin: 0 3rem;
+}
 .ml {
   margin: 0 0.5rem;
 }
 .ml-1 {
   margin: 0 1rem;
+}
+.mb-1 {
+  margin-bottom: 1rem;
+}
+.mb-2 {
+  margin-bottom: 2rem;
 }
 
 .f-right {
@@ -366,10 +447,10 @@ img {
   color: #888;
 }
 
-.form input[type='text'],
-.form input[type='email'],
-.form input[type='password'],
-.form input[type='date'],
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"],
+.form input[type="date"],
 .form select,
 .form textarea {
   display: block;
@@ -379,7 +460,7 @@ img {
   border: 1px solid #ccc;
 }
 
-.form input[type='submit'],
+.form input[type="submit"],
 button {
   font: inherit;
 }
@@ -454,7 +535,7 @@ button {
 /* Landing Page */
 .landing {
   position: relative;
-  background: url('./img/showcase.jpg') no-repeat center center/cover;
+  background: url("./img/daycare_bg.jpg") no-repeat center center/cover;
   height: 100vh;
 }
 
@@ -485,10 +566,10 @@ button {
 .profile-grid {
   display: grid;
   grid-template-areas:
-    'top top'
-    'about about'
-    'exp edu'
-    'github github';
+    "top top"
+    "about about"
+    "exp edu"
+    "github github";
   grid-gap: 1rem;
 }
 
@@ -537,7 +618,7 @@ button {
 .profile-exp h2,
 .profile-edu h2,
 .dashboardactions {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .profile-exp > div,
@@ -672,11 +753,11 @@ button {
 
   .profile-grid {
     grid-template-areas:
-      'top'
-      'about'
-      'exp'
-      'edu'
-      'github';
+      "top"
+      "about"
+      "exp"
+      "edu"
+      "github";
   }
 
   .profile-about .skills {

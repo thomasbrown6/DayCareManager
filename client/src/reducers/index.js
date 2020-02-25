@@ -5,12 +5,12 @@ import profile from './profile';
 import post from './post';
 import daycare from './daycare';
 import classroom from './classroom';
+import student from './student';
 
 export default combineReducers({
-    alert,
-    auth,
-    profile,
-    post,
-    daycare,
-    classroom
+  alert,
+  auth,
+  daycare,
+  classroom,
+  student
 });

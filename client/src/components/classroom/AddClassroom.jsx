@@ -1,17 +1,19 @@
-import React, { Fragment, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addClassroom } from '../../actions/classroom';
-import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Fab from '@material-ui/core/Fab';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import React, { Fragment, useState } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Hotkeys from "react-hot-keys";
+import { addClassroom } from "../../actions/classroom";
+import { makeStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+import Fab from "@material-ui/core/Fab";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import { PanToolRounded, PhotoFilterSharp } from "@material-ui/icons";
 
-const AddClassroom = ({ daycare, addClassroom }) => {
+const AddClassroom = ({ daycare: { daycare }, addClassroom }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    description: ''
+    name: "",
+    description: ""
   });
 
   const { name, description } = formData;
@@ -34,34 +36,43 @@ const AddClassroom = ({ daycare, addClassroom }) => {
   };
 
   const onSubmit = e => {
-    console.log('submit triggered');
+    console.log("submit triggered");
     e.preventDefault();
     addClassroom(formData, daycare._id);
+  };
+
+  const onKeyUp = (keyName, e, handle) => {
+    console.log("test:onKeyUp", e, handle);
+    onSubmit(e);
   };
 
   const classes = useStyles();
 
   return (
     <Fragment>
-      <FormControl className={classes.formControl} onSubmit={e => onSubmit(e)}>
+      <Hotkeys keyName="shift+enter" onKeyUp={onKeyUp.bind(this)}></Hotkeys>
+      <FormControl
+        className={classes.formControl + " ft-r"}
+        onSubmit={e => onSubmit(e)}
+      >
         <TextField
-          label='Class Name'
-          id='standard-basic'
-          name='name'
+          label="Class Name"
+          id="standard-basic"
+          name="name"
           value={name}
           onChange={e => onChange(e)}
         />
         <TextField
-          label='Description'
-          id='standard-basic'
-          name='description'
+          label="Description"
+          id="standard-basic"
+          name="description"
           value={description}
           onChange={e => onChange(e)}
         />
         <Fab
-          variant='extended'
-          className='primary'
-          style={{ marginTop: '10px', background: '#17a2b8' }}
+          variant="extended"
+          className="primary"
+          style={{ marginTop: "10px", background: "#17a2b8" }}
           onClick={e => onSubmit(e)}
         >
           <SaveAltIcon />
@@ -73,7 +84,12 @@ const AddClassroom = ({ daycare, addClassroom }) => {
 };
 
 AddClassroom.propTypes = {
-  addClassroom: PropTypes.func.isRequired
+  addClassroom: PropTypes.func.isRequired,
+  daycare: PropTypes.object.isRequired
 };
 
-export default connect(null, { addClassroom })(AddClassroom);
+const mapStateToProps = state => ({
+  daycare: state.daycare
+});
+
+export default connect(mapStateToProps, { addClassroom })(AddClassroom);

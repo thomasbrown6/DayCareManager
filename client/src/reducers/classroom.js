@@ -1,10 +1,11 @@
 import {
   GET_CLASSROOM,
   CLASSROOM_ERROR,
-  CLEAR_CLASSROOM,
+  DELETE_CLASSROOM,
   UPDATE_CLASSROOM,
-  GET_CLASSROOMS
-} from '../actions/types';
+  GET_CLASSROOMS,
+  CLEAR_CLASSROOMS
+} from "../actions/types";
 
 const initialState = {
   classroom: null,
@@ -21,7 +22,7 @@ export default function(state = initialState, action) {
     case UPDATE_CLASSROOM:
       return {
         ...state,
-        classroom: payload,
+        classrooms: payload,
         loaded: true
       };
 
@@ -37,14 +38,16 @@ export default function(state = initialState, action) {
         ...state,
         error: payload,
         loaded: true,
-        classroom: null
+        classroom: null,
+        classrooms: null
       };
 
-    case CLEAR_CLASSROOM:
+    case CLEAR_CLASSROOMS:
+    case DELETE_CLASSROOM:
       return {
         ...state,
         classroom: null,
-        repos: [],
+        classrooms: null,
         loaded: true,
         error: null
       };

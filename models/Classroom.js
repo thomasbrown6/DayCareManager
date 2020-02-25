@@ -20,9 +20,18 @@ const ClassroomSchema = new mongoose.Schema({
   },
   students: [
     {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+      },
       daycare: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'daycare'
+      },
+      classroom: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'classroom'
       },
       firstname: {
         type: String,
@@ -45,12 +54,10 @@ const ClassroomSchema = new mongoose.Schema({
   teachers: [
     {
       firstname: {
-        type: String,
-        required: true
+        type: String
       },
       lastname: {
-        type: String,
-        required: true
+        type: String
       }
     }
   ],

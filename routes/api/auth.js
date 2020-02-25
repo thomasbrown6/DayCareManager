@@ -51,16 +51,14 @@ router.post(
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res
-          .status(400)
-          .json({
-            errors: [
-              {
-                msg:
-                  'Wrong password. Try again or click Forgot password to reset it.'
-              }
-            ]
-          });
+        return res.status(400).json({
+          errors: [
+            {
+              msg:
+                'Wrong password. Try again or click Forgot password to reset it.'
+            }
+          ]
+        });
       }
 
       //return jsonwebtoken to log user in once they register
@@ -69,19 +67,20 @@ router.post(
           id: user.id
         }
       };
-
+      //config.get('jwtSecret'),
+      //const configdata = config.get('jwtSecret');
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        'mysecrettoken',
         { expiresIn: 3600 },
         (error, token) => {
           if (error) throw error;
           res.json({ token });
         }
       );
-    } catch(err) {
+    } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send('Server error: ' + err.message);
     }
   }
 );

@@ -1,18 +1,20 @@
-import axios from 'axios';
-import { setAlert } from './alert';
+import axios from "axios";
+import { setAlert } from "./alert";
 import {
   GET_CLASSROOM,
   GET_CLASSROOMS,
   CLASSROOM_ERROR,
   UPDATE_CLASSROOM,
-  CLEAR_CLASSROOM,
-  DELETE_CLASSROOM
-} from './types';
+  CLEAR_CLASSROOMS,
+  DELETE_CLASSROOM,
+  GET_STUDENTS,
+  STUDENTS_ERROR
+} from "./types";
 
-// Get profile by Id
+// Get classrooms by daycare
 export const getClassroomsByDaycare = id => async dispatch => {
   try {
-    const res = await axios.get(`/api/classrooms/daycare/${id}`);
+    const res = await axios.get(`/api/daycares/classrooms/${id}`);
 
     dispatch({
       type: GET_CLASSROOMS,
@@ -21,6 +23,23 @@ export const getClassroomsByDaycare = id => async dispatch => {
   } catch (err) {
     dispatch({
       type: CLASSROOM_ERROR,
+      payload: { msg: err.response, status: err.response.status }
+    });
+  }
+};
+
+// Get students by daycare
+export const getStudentsByDaycare = id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/daycares/${id}/students`);
+
+    dispatch({
+      type: GET_STUDENTS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: STUDENTS_ERROR,
       payload: { msg: err.response, status: err.response.status }
     });
   }
@@ -49,29 +68,32 @@ export const getClassroomById = (daycare_id, class_id) => async dispatch => {
 };
 
 // Add Classroom
-export const addClassroom = (formData, history) => async dispatch => {
+export const addClassroom = (formData, id) => async dispatch => {
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }
     };
 
-    const res = await axios.put('/api/daycare/classroom', formData, config);
+    const res = await axios.put(
+      `/api/daycares/classrooms/${id}`,
+      formData,
+      config
+    );
 
     dispatch({
       type: UPDATE_CLASSROOM,
       payload: res.data
     });
 
-    dispatch(setAlert('Classroom Added', 'success'));
-    history.push('/dashboard');
+    dispatch(setAlert("Classroom Added", "success"));
   } catch (err) {
-    // const errors = err.response.data.errors;
+    const errors = err.response.data.errors;
 
-    // if (errors) {
-    //   errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    // }
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "error")));
+    }
 
     dispatch({
       type: CLASSROOM_ERROR,
@@ -85,25 +107,25 @@ export const addStudent = formData => async dispatch => {
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }
     };
 
     //const class = await axios.get('/api');
 
-    const res = await axios.put('/api/classrooms/student', formData, config);
+    const res = await axios.put("/api/classrooms/student", formData, config);
 
     dispatch({
       type: UPDATE_CLASSROOM,
       payload: res.data
     });
 
-    dispatch(setAlert('Student Added', 'success'));
+    dispatch(setAlert("Student Added", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach(error => dispatch(setAlert(error.msg, "error")));
     }
 
     dispatch({
@@ -123,12 +145,12 @@ export const deleteStudent = id => async dispatch => {
       payload: res.data
     });
 
-    dispatch(setAlert('Student Removed', 'success'));
+    dispatch(setAlert("Student Removed", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach(error => dispatch(setAlert(error.msg, "error")));
     }
     dispatch({
       type: CLASSROOM_ERROR,
@@ -138,20 +160,22 @@ export const deleteStudent = id => async dispatch => {
 };
 
 // Delete classroom
-export const deleteClassroom = () => async dispatch => {
-  if (window.confirm('Are you sure you want to delete your classroom?')) {
+export const deleteClassroom = (daycareId, classId) => async dispatch => {
+  if (window.confirm("Are you sure you want to delete your classroom?")) {
     try {
-      await axios.delete('/api/classroom');
+      const res = await axios.delete(
+        `/api/daycares/classrooms/${daycareId}/${classId}`
+      );
 
-      dispatch({ type: CLEAR_CLASSROOM });
       dispatch({ type: DELETE_CLASSROOM });
+      dispatch({ type: GET_CLASSROOMS, payload: res.data });
 
-      dispatch(setAlert('Your daycare has been deleted'));
+      dispatch(setAlert("Your classroom has been deleted", "error"));
     } catch (err) {
       const errors = err.response.data.errors;
 
       if (errors) {
-        errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        errors.forEach(error => dispatch(setAlert(error.msg, "error")));
       }
       dispatch({
         type: CLASSROOM_ERROR,

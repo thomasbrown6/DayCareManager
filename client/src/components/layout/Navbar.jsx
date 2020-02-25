@@ -1,47 +1,47 @@
-import React, { Fragment } from 'react';
-import clsx from 'clsx';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { logout } from '../../actions/auth';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Drawer from '@material-ui/core/Drawer';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import Popover from '../utils/Popover';
+import React, { Fragment } from "react";
+import clsx from "clsx";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { logout } from "../../actions/auth";
+import { useTheme, makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Drawer from "@material-ui/core/Drawer";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import Badge from "@material-ui/core/Badge";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import MenuIcon from "@material-ui/icons/Menu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MailIcon from "@material-ui/icons/Mail";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import Popover from "../utils/Popover";
 import {
   HomeWork,
   AccountBalance,
   SupervisedUserCircle,
   SportsKabaddi
-} from '@material-ui/icons';
+} from "@material-ui/icons";
 
 const drawerWidth = 240;
 
 const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
   const useStyles = makeStyles(theme => ({
     root: {
-      display: 'flex'
+      display: "flex"
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
+      transition: theme.transitions.create(["width", "margin"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       })
@@ -49,7 +49,7 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
     appBarShift: {
       marginLeft: drawerWidth,
       width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
+      transition: theme.transitions.create(["width", "margin"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
       })
@@ -61,35 +61,35 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
       marginRight: theme.spacing(2)
     },
     hide: {
-      display: 'none'
+      display: "none"
     },
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
-      whiteSpace: 'nowrap'
+      whiteSpace: "nowrap"
     },
     drawerOpen: {
       width: drawerWidth,
-      transition: theme.transitions.create('width', {
+      transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
       })
     },
     drawerClose: {
-      transition: theme.transitions.create('width', {
+      transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       }),
-      overflowX: 'hidden',
+      overflowX: "hidden",
       width: theme.spacing(7) + 1,
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         width: theme.spacing(9) + 1
       }
     },
     toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
       padding: theme.spacing(0, 1),
       ...theme.mixins.toolbar
     },
@@ -98,32 +98,32 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
       padding: theme.spacing(3)
     },
     title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block'
+      display: "none",
+      [theme.breakpoints.up("sm")]: {
+        display: "block"
       }
     },
     inputRoot: {
-      color: 'inherit'
+      color: "inherit"
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 7),
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
+      transition: theme.transitions.create("width"),
+      width: "100%",
+      [theme.breakpoints.up("md")]: {
         width: 200
       }
     },
     sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex'
+      display: "none",
+      [theme.breakpoints.up("md")]: {
+        display: "flex"
       }
     },
     sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none'
+      display: "flex",
+      [theme.breakpoints.up("md")]: {
+        display: "none"
       }
     }
   }));
@@ -166,14 +166,14 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
     logout();
   };
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
@@ -183,32 +183,32 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
         <IconButton
-          aria-label='show 4 new mails'
-          color='inherit'
-          containerElement={<Link to='/' />}
+          aria-label="show 4 new mails"
+          color="inherit"
+          containerElement={<Link to="/" />}
         >
-          <Badge badgeContent={4} color='secondary'>
+          <Badge badgeContent={4} color="secondary">
             <HomeWork />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label='show 11 new notifications' color='inherit'>
-          <Badge badgeContent={10} color='secondary'>
+        <IconButton aria-label="show 11 new notifications" color="inherit">
+          <Badge badgeContent={10} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -216,10 +216,10 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          aria-label='account of current user'
-          aria-controls='primary-search-account-menu'
-          aria-haspopup='true'
-          color='inherit'
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
         >
           <AccountCircle />
         </IconButton>
@@ -230,62 +230,62 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
   const authLinks = (
     <div className={classes.grow}>
       <AppBar
-        position='fixed'
+        position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
-        }) + 'tricary'}
+        })}
       >
-        <Toolbar variant='dense'>
+        <Toolbar variant="dense">
           <IconButton
-            color='inherit'
-            aria-label='open drawer'
+            color="inherit"
+            aria-label="open drawer"
             onClick={handleDrawerOpen}
-            edge='start'
+            edge="start"
             className={clsx(classes.menuButton, {
               [classes.hide]: open
             })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant='h6' noWrap>
-            <Link to='/' className='nav-item'>
+          <Typography className={classes.title} variant="h6" noWrap>
+            <Link to="/" className="nav-item">
               Daycare Manager
             </Link>
           </Typography>
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label='show 4 new mails' color='inherit'>
-              <Badge badgeContent={4} color='secondary'>
-                <Popover component={<MailIcon />} text={'New message'} />
+            <IconButton aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <Popover component={<MailIcon />} text={"New message"} />
               </Badge>
             </IconButton>
-            <IconButton aria-label='show 16 new notifications' color='inherit'>
-              <Badge badgeContent={16} color='secondary'>
+            <IconButton aria-label="show 16 new notifications" color="inherit">
+              <Badge badgeContent={16} color="secondary">
                 <Popover
                   component={<NotificationsIcon />}
-                  text={'Notifications'}
+                  text={"Notifications"}
                 />
               </Badge>
             </IconButton>
             <IconButton
-              edge='end'
-              aria-label='account of current user'
+              edge="end"
+              aria-label="account of current user"
               aria-controls={menuId}
-              aria-haspopup='true'
+              aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color='inherit'
+              color="inherit"
             >
               <AccountCircle />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
-              aria-label='show more'
+              aria-label="show more"
               aria-controls={mobileMenuId}
-              aria-haspopup='true'
+              aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color='inherit'
+              color="inherit"
             >
               <MoreIcon />
             </IconButton>
@@ -293,7 +293,7 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
         </Toolbar>
       </AppBar>
       <Drawer
-        variant='permanent'
+        variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open
@@ -312,32 +312,32 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
         </div>
         <Divider />
         <List>
-          <ListItem button component={Link} to='/' key={0}>
+          <ListItem button component={Link} to="/expenses" key={0}>
             <ListItemIcon>
-              <Popover component={<AccountBalance />} text={'Expenses'} />
+              <Popover component={<AccountBalance />} text={"Expenses"} />
             </ListItemIcon>
-            <ListItemText primary={'Expenses'} />
+            <ListItemText primary={"Expenses"} />
           </ListItem>
-          <ListItem button component={Link} to='/' key={1}>
+          <ListItem button component={Link} to="/" key={1}>
             <ListItemIcon>
-              <Popover component={<HomeWork />} text={'Daycares'} />
+              <Popover component={<HomeWork />} text={"Daycares"} />
             </ListItemIcon>
-            <ListItemText primary={'Daycares'} />
+            <ListItemText primary={"Daycares"} />
           </ListItem>
         </List>
         <Divider />
         <List>
-          <ListItem button component={Link} to='/' key={2}>
+          <ListItem button component={Link} to="/" key={2}>
             <ListItemIcon>
-              <Popover component={<SportsKabaddi />} text={'Kids'} />
+              <Popover component={<SportsKabaddi />} text={"Kids"} />
             </ListItemIcon>
-            <ListItemText primary={'Kids'} />
+            <ListItemText primary={"Kids"} />
           </ListItem>
-          <ListItem button component={Link} to='/' key={3}>
+          <ListItem button component={Link} to="/" key={3}>
             <ListItemIcon>
-              <Popover component={<SupervisedUserCircle />} text={'Parents'} />
+              <Popover component={<SupervisedUserCircle />} text={"Parents"} />
             </ListItemIcon>
-            <ListItemText primary={'Parents'} />
+            <ListItemText primary={"Parents"} />
           </ListItem>
         </List>
       </Drawer>
@@ -349,33 +349,33 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
   const guestLinks = (
     <div className={classes.grow}>
       <AppBar
-        position='fixed'
+        position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: false
         })}
       >
         <Toolbar>
           <IconButton
-            color='inherit'
-            edge='start'
+            color="inherit"
+            edge="start"
             className={clsx(classes.menuButton, {
               [classes.hide]: true
             })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant='h6' noWrap>
+          <Typography className={classes.title} variant="h6" noWrap>
             Daycare Manager
           </Typography>
 
           <div className={classes.grow} />
-          <Typography variant='p' noWrap>
-            <Link to='/login' className='nav-link'>
+          <Typography variant="p" noWrap>
+            <Link to="/login" className="nav-link">
               Login
             </Link>
           </Typography>
-          <Typography variant='p' noWrap>
-            <Link to='/register' className='nav-link'>
+          <Typography variant="p" noWrap>
+            <Link to="/register" className="nav-link">
               Register
             </Link>
           </Typography>

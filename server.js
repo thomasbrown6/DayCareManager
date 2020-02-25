@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const connectDB = require('./config/cosmosdb');
 const path = require('path');
 
 const app = express();
@@ -15,8 +15,8 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/posts', require('./routes/api/posts'));
+app.use('/api/daycares', require('./routes/api/classrooms'));
 app.use('/api/daycares', require('./routes/api/daycares'));
-app.use('/api/classrooms', require('./routes/api/classrooms'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

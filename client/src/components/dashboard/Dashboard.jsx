@@ -1,55 +1,56 @@
-import React, { useEffect, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Spinner from '../layout/Spinner';
-import DashboardActions from './DashboardActions';
-import Daycare from './Daycare';
-import { getUserDaycares, deleteDaycare } from '../../actions/daycare';
-import { getStudentsForDaycare } from '../../actions/student';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Students from './Students';
-import DaycarePost from '../daycare/DaycarePost';
+import React, { useEffect, Fragment } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Spinner from "../layout/Spinner";
+import DashboardActions from "./DashboardActions";
+import Daycare from "./Daycare";
+import { getUserDaycares, deleteDaycare } from "../../actions/daycare";
+import { getStudentsForDaycare } from "../../actions/student";
+import { getClassroomsByDaycare } from "../../actions/classroom";
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Chart from "./Chart";
+import Deposits from "./Deposits";
+import Students from "./Students";
+import DaycarePost from "../daycare/DaycarePost";
 
 function Copyright() {
   return (
-    <Typography variant='body2' color='textSecondary' align='center'>
-      {'Copyright © '}
-      <Link color='inherit' href='https://material-ui.com/'>
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" to="https://material-ui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex'
+    display: "flex"
   },
   toolbar: {
     paddingRight: 24 // keep right padding when drawer closed
   },
   toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
     ...theme.mixins.toolbar
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     })
@@ -58,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: 36
   },
   menuButtonHidden: {
-    display: 'none'
+    display: "none"
   },
   title: {
     flexGrow: 1
@@ -69,15 +70,15 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column'
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column"
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto'
+    height: "100vh",
+    overflow: "auto"
   },
   fixedHeight: {
     height: 240
@@ -88,6 +89,7 @@ const Dashboard = ({
   getUserDaycares,
   deleteDaycare,
   getStudentsForDaycare,
+  getClassroomsByDaycare,
   auth: { user },
   match,
   daycare: { daycare, daycares, loaded },
@@ -104,16 +106,18 @@ const Dashboard = ({
     return <Spinner />;
   } else if ((loaded && daycares == null) || daycare == null) {
     getUserDaycares();
+    if (daycare != null) getClassroomsByDaycare(daycare._id);
+
     return (
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth='lg' className={classes.container}>
+        <Container maxWidth="lg" className={classes.container}>
           <Fragment>
             <p>
               You have not yet set up any daycare centers yet, please add one to
               get started
             </p>
-            <Link to='/create-daycare' className='btn btn-primary my-1'>
+            <Link to="/create-daycare" className="btn btn-primary my-1">
               Create Daycare
             </Link>
           </Fragment>
@@ -124,22 +128,24 @@ const Dashboard = ({
       </main>
     );
   } else if (loaded && daycares != null && daycare != null) {
+    if (daycare != null) getClassroomsByDaycare(daycare._id);
+
     if (student == null) getStudentsForDaycare(daycare._id);
     return (
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth='lg' className={classes.container}>
+        <Container maxWidth="lg" className={classes.container}>
           <DashboardActions />
-          <h1 className='medium center'>{daycare.company}</h1>
+          <h1 className="medium center">{daycare.company}</h1>
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
               {/* <Chart /> */}
-              <DaycarePost key={'post.title'} daycare={daycare} />
+              <DaycarePost key={"post.title"} daycare={daycare} />
             </Grid>
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
+              <Paper className={fixedHeightPaper + " tricary"}>
                 <Deposits />
               </Paper>
             </Grid>
@@ -165,6 +171,7 @@ Dashboard.propTypes = {
   getUserDaycares: PropTypes.func.isRequired,
   deleteDaycare: PropTypes.func.isRequired,
   getStudentsForDaycare: PropTypes.func.isRequired,
+  getClassroomsByDaycare: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   daycare: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired
@@ -179,5 +186,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getUserDaycares,
   deleteDaycare,
-  getStudentsForDaycare
+  getStudentsForDaycare,
+  getClassroomsByDaycare
 })(Dashboard);
