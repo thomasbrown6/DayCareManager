@@ -1,7 +1,6 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Hotkeys from "react-hot-keys";
 import { addClassroom } from "../../actions/classroom";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
@@ -15,9 +14,8 @@ const AddClassroom = ({ daycare: { daycare }, addClassroom }) => {
     name: "",
     description: ""
   });
-
+  const [submitting, setSubmitting] = useState(false);
   const { name, description } = formData;
-
   const useStyles = makeStyles(theme => ({
     formControl: {
       margin: theme.spacing(1),
@@ -28,6 +26,10 @@ const AddClassroom = ({ daycare: { daycare }, addClassroom }) => {
     }
   }));
 
+  // useEffect(() => {
+  //   document.addEventListener("keyup", doc_keyUp, false);
+  // }, []);
+
   const onChange = e => {
     setFormData({
       ...formData,
@@ -36,21 +38,23 @@ const AddClassroom = ({ daycare: { daycare }, addClassroom }) => {
   };
 
   const onSubmit = e => {
-    console.log("submit triggered");
     e.preventDefault();
     addClassroom(formData, daycare._id);
   };
 
-  const onKeyUp = (keyName, e, handle) => {
-    console.log("test:onKeyUp", e, handle);
-    onSubmit(e);
-  };
+  //  const doc_keyUp = e => {
+  //   console.log("hit function");
+  //   if (e.keyCode == 13 && !submitting) {
+  //     setSubmitting({ submitting: true });
+  //     onSubmit(e);
+  //     setSubmitting({ submitting: false });
+  //   }
+  // };
 
   const classes = useStyles();
 
   return (
     <Fragment>
-      <Hotkeys keyName="shift+enter" onKeyUp={onKeyUp.bind(this)}></Hotkeys>
       <FormControl
         className={classes.formControl + " ft-r"}
         onSubmit={e => onSubmit(e)}

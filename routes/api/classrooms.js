@@ -34,17 +34,18 @@ router.put(
     };
 
     try {
+      console.log("before the daycare lookup");
       const daycare = await Daycare.findById(req.params.id);
-
-      if (!daycare) {
+      console.log("before check to see if daycare null");
+      if (daycare === null) {
         return res.status(404).json({ msg: "Daycare not found" });
       }
 
       daycare.classrooms.unshift(newClass);
 
       await daycare.save();
-
-      return res.status(200).json(daycare.classrooms.sort({ name: 1 }));
+      console.log("after daycare save");
+      return res.status(200).json(daycare.classrooms);
     } catch (err) {
       if (err.kind == "ObjectId") {
         return res.status(404).json({ msg: "Daycare not found by id" });

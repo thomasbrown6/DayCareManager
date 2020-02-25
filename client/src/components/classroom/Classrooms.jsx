@@ -12,7 +12,7 @@ import AddClassroom from "./AddClassroom";
 import ListDropDown from "../../components/table/ListDropDown";
 
 const Classrooms = ({
-  classroom: { classrooms },
+  classroom: { classrooms, loaded },
   getUserDaycares,
   getClassroomsByDaycare,
   daycare: { daycare }
@@ -20,7 +20,7 @@ const Classrooms = ({
   useEffect(() => {
     getUserDaycares();
   }, [getUserDaycares]);
-  if (daycare != null) {
+  if (daycare != null && !loaded) {
     getClassroomsByDaycare(daycare._id);
   }
 

@@ -107,6 +107,11 @@ p.MuiFormHelperText-root {
   color: var(--font-color);
 }
 
+/* Alert */
+div.MuiAlert-standardSuccess {
+  background-color: var(--tricary-color);
+}
+
 .font-bold {
   font-weight: bold;
 }

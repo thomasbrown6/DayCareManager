@@ -77,95 +77,99 @@ const AddStudent = ({
 
   return (
     <Fragment>
-      <Hotkeys keyName="shift+enter" onKeyUp={e => onSubmit(e)}></Hotkeys>
-      <FormControl className={classes.formControl} onSubmit={e => onSubmit(e)}>
-        <TextField
-          label="First Name"
-          id="standard-basic"
-          name="firstname"
-          value={firstname}
-          onChange={e => onChange(e)}
-        />
-        <TextField
-          label="Last Name"
-          id="standard-basic"
-          name="lastname"
-          value={lastname}
-          onChange={e => onChange(e)}
-        />
-        <TextField
-          label="Parent 1 Full Name"
-          id="standard-basic"
-          name="parentname1"
-          value={parentname1}
-          onChange={e => onChange(e)}
-        />
-        <TextField
-          label="Parent 2 Full Name"
-          id="standard-basic"
-          name="parentname2"
-          value={parentname2}
-          onChange={e => onChange(e)}
-        />
+      <Hotkeys keyName="shift+enter" onKeyUp={e => onSubmit(e)}>
+        <FormControl
+          className={classes.formControl}
+          onSubmit={e => onSubmit(e)}
+        >
+          <TextField
+            label="First Name"
+            id="standard-basic"
+            name="firstname"
+            value={firstname}
+            onChange={e => onChange(e)}
+          />
+          <TextField
+            label="Last Name"
+            id="standard-basic"
+            name="lastname"
+            value={lastname}
+            onChange={e => onChange(e)}
+          />
+          <TextField
+            label="Parent 1 Full Name"
+            id="standard-basic"
+            name="parentname1"
+            value={parentname1}
+            onChange={e => onChange(e)}
+          />
+          <TextField
+            label="Parent 2 Full Name"
+            id="standard-basic"
+            name="parentname2"
+            value={parentname2}
+            onChange={e => onChange(e)}
+          />
 
-        <TextField
-          label="Dixon Tuition"
-          id="standard-basic"
-          name="dixontuition"
-          value={dixontuition}
-          onChange={e => onChange(e)}
-        />
-        <TextField
-          label="Dixon Overage Charge"
-          id="standard-basic"
-          name="dixonoveragecharge"
-          value={dixonoveragecharge}
-          onChange={e => onChange(e)}
-        />
-        <TextField
-          label="Parent Fee"
-          id="standard-basic"
-          name="parentfee"
-          value={parentfee}
-          onChange={e => onChange(e)}
-        />
-        <TextField
-          label="Subsidy Payment"
-          id="standard-basic"
-          name="subsidypayment"
-          value={subsidypayment}
-          onChange={e => onChange(e)}
-        />
-        <Select
-          id={class_id}
-          name={"classroomname"}
-          value={classroomname}
-          onChange={e => onChange(e)}
-          displayEmpty
-          className={classes.selectEmpty}
-        >
-          <MenuItem value="Pick Classroom" disabled>
-            Pick Classroom
-          </MenuItem>
-          {classrooms.map(_class => {
-            return (
-              <MenuItem value={_class.name} name="classroom" id={_class._id}>
-                {_class.name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-        <FormHelperText>Choose a classroom for the student</FormHelperText>
-        <Fab
-          variant="extended"
-          className="primary"
-          style={{ marginTop: "10px", background: "#17a2b8" }}
-          onClick={e => onSubmit(e)}
-        >
-          <SaveAltIcon />
-          Add Student
-        </Fab>
-      </FormControl>
+          <TextField
+            label="Dixon Tuition"
+            id="standard-basic"
+            name="dixontuition"
+            value={dixontuition}
+            onChange={e => onChange(e)}
+          />
+          <TextField
+            label="Dixon Overage Charge"
+            id="standard-basic"
+            name="dixonoveragecharge"
+            value={dixonoveragecharge}
+            onChange={e => onChange(e)}
+          />
+          <TextField
+            label="Parent Fee"
+            id="standard-basic"
+            name="parentfee"
+            value={parentfee}
+            onChange={e => onChange(e)}
+          />
+          <TextField
+            label="Subsidy Payment"
+            id="standard-basic"
+            name="subsidypayment"
+            value={subsidypayment}
+            onChange={e => onChange(e)}
+          />
+          <Select
+            id={class_id}
+            name={"classroomname"}
+            value={classroomname}
+            onChange={e => onChange(e)}
+            displayEmpty
+            className={classes.selectEmpty}
+          >
+            <MenuItem value="Pick Classroom" disabled>
+              Pick Classroom
+            </MenuItem>
+            {classrooms.map(_class => {
+              return (
+                <MenuItem value={_class.name} name="classroom" id={_class._id}>
+                  {_class.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          <FormHelperText>Choose a classroom for the student</FormHelperText>
+          <Fab
+            variant="extended"
+            className="primary"
+            style={{ marginTop: "10px", background: "#17a2b8" }}
+            onClick={e => onSubmit(e)}
+          >
+            <SaveAltIcon />
+            Add Student
+          </Fab>
+        </FormControl>
+      </Hotkeys>
     </Fragment>
   );
 };
