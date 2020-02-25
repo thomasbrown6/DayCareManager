@@ -2,7 +2,6 @@ import React, { Fragment, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Hotkeys from "react-hot-keys";
 import { login } from "../../actions/auth";
 import { Card, CardContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -80,7 +79,6 @@ const Login = ({ login, isAuthenticated }) => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Hotkeys keyName="shift+enter" onKeyUp={e => handleSubmit(e)}></Hotkeys>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>

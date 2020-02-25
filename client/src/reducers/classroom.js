@@ -37,7 +37,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         error: payload,
-        loaded: true,
+        loaded: false,
         classroom: null,
         classrooms: null
       };

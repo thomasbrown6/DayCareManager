@@ -26,7 +26,7 @@ const Alert = ({ alerts }) => {
   if (alerts !== null && alerts.length > 0) {
     return alerts.map(alert => (
       <div key={alert.id} className={classes.root}>
-        <MuiAlert severity="error">{alert.msg}</MuiAlert>
+        <MuiAlert severity="success">{alert.msg}</MuiAlert>
       </div>
     ));
   } else {

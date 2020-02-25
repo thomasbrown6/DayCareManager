@@ -86,13 +86,12 @@ export const addClassroom = (formData, id) => async dispatch => {
       type: UPDATE_CLASSROOM,
       payload: res.data
     });
-
     dispatch(setAlert("Classroom Added", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "error")));
+      errors.forEach(error => dispatch(setAlert(error.msg, "success")));
     }
 
     dispatch({
@@ -125,7 +124,7 @@ export const addStudent = formData => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "error")));
+      errors.forEach(error => dispatch(setAlert(error.msg, "success")));
     }
 
     dispatch({
@@ -150,7 +149,7 @@ export const deleteStudent = id => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "error")));
+      errors.forEach(error => dispatch(setAlert(error.msg, "success")));
     }
     dispatch({
       type: CLASSROOM_ERROR,
@@ -170,12 +169,12 @@ export const deleteClassroom = (daycareId, classId) => async dispatch => {
       dispatch({ type: DELETE_CLASSROOM });
       dispatch({ type: GET_CLASSROOMS, payload: res.data });
 
-      dispatch(setAlert("Your classroom has been deleted", "error"));
+      dispatch(setAlert("Your classroom has been deleted", "success"));
     } catch (err) {
       const errors = err.response.data.errors;
 
       if (errors) {
-        errors.forEach(error => dispatch(setAlert(error.msg, "error")));
+        errors.forEach(error => dispatch(setAlert(error.msg, "success")));
       }
       dispatch({
         type: CLASSROOM_ERROR,

@@ -63,8 +63,7 @@ const DaycareSchema = new mongoose.Schema({
             required: true
           },
           classroomname: {
-            type: String,
-            required: true
+            type: String
           },
           dixontuition: {
             type: Number
