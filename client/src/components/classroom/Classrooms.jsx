@@ -9,7 +9,7 @@ import { getClassroomById, deleteClassroom } from "../../actions/classroom";
 import { getClassroomsByDaycare } from "../../actions/classroom";
 import DashboardActions from "../dashboard/DashboardActions";
 import AddClassroom from "./AddClassroom";
-import ListDropDown from "../../components/table/ListDropDown";
+import ListDropDown from "./ListDropDown";
 
 const Classrooms = ({
   classroom: { classrooms, loaded },
@@ -34,12 +34,13 @@ const Classrooms = ({
             {classrooms === null ? (
               <h2>No classrooms, click here to add classrooms</h2>
             ) : (
-              <List>
-                {classrooms.map((classroom, index) => {
-                  if (index < 30) {
-                    return <ListDropDown classroom={classroom} />;
-                  }
-                })}
+              <List className="no-padding ">
+                {Array.isArray(classrooms) &&
+                  classrooms.map((classroom, index) => {
+                    if (index < 30) {
+                      return <ListDropDown classroom={classroom} />;
+                    }
+                  })}
               </List>
             )}
           </Container>

@@ -220,7 +220,7 @@ const EnhancedTableToolbar = props => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          Nutrition
+          Expenses
         </Typography>
       )}
 
@@ -279,6 +279,11 @@ export default function EnhancedTable({ students }) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  var formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD"
+  });
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -382,23 +387,29 @@ export default function EnhancedTable({ students }) {
                         scope="row"
                         padding="none"
                       >
-                        {student.lastname + ", " + student.firstname}
+                        {student.firstname + " " + student.lastname}
                       </TableCell>
                       <TableCell align="middle">
                         {student.classroomname}
                       </TableCell>
                       <TableCell align="middle">
-                        {student.dixontuition}
+                        {formatter.format(student.dixontuition)}
                       </TableCell>
                       <TableCell align="middle">
-                        {student.dixonoveragecharge}
+                        {formatter.format(student.dixonoveragecharge)}
                       </TableCell>
-                      <TableCell align="middle">{student.parentfee}</TableCell>
                       <TableCell align="middle">
-                        {student.subsidypayment}
+                        {formatter.format(student.parentfee)}
                       </TableCell>
-                      <TableCell align="middle">{student.total}</TableCell>
-                      <TableCell align="middle">{student.difference}</TableCell>
+                      <TableCell align="middle">
+                        {formatter.format(student.subsidypayment)}
+                      </TableCell>
+                      <TableCell align="middle">
+                        {formatter.format(student.total)}
+                      </TableCell>
+                      <TableCell align="middle">
+                        {formatter.format(student.difference)}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

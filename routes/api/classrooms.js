@@ -34,17 +34,24 @@ router.put(
     };
 
     try {
-      console.log("before the daycare lookup");
       const daycare = await Daycare.findById(req.params.id);
-      console.log("before check to see if daycare null");
       if (daycare === null) {
         return res.status(404).json({ msg: "Daycare not found" });
       }
 
       daycare.classrooms.unshift(newClass);
-
       await daycare.save();
-      console.log("after daycare save");
+
+      daycare.classrooms = daycare.classrooms.sort(function(a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+
       return res.status(200).json(daycare.classrooms);
     } catch (err) {
       if (err.kind == "ObjectId") {
@@ -69,6 +76,15 @@ router.get("/classrooms/:id", auth, async (req, res) => {
     if (!daycare.classrooms || daycare.classrooms.length === 0)
       return res.status(404).json({ msg: "no classrooms for daycare" });
 
+    daycare.classrooms = daycare.classrooms.sort(function(a, b) {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
     return res.status(200).json(daycare.classrooms);
   } catch (err) {
     console.error(err.message);
@@ -150,7 +166,7 @@ router.delete("/classrooms/:daycare_id/:class_id", auth, async (req, res) => {
 // @desc    Add a student to classroom
 // @access  Private
 router.put(
-  "/classrooms/students/:daycare_id/:class_id",
+  "/classrooms/students/:daycare_id",
   [
     auth,
     [
@@ -158,9 +174,6 @@ router.put(
         .not()
         .isEmpty(),
       check("lastname", "Have to have a last name for student")
-        .not()
-        .isEmpty(),
-      check("parentname1", "Student must have at least one parent")
         .not()
         .isEmpty(),
       check("classroomname", "You must choose a classroom")
@@ -174,7 +187,7 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const {
+    let {
       firstname,
       lastname,
       parentname1,
@@ -186,21 +199,6 @@ router.put(
       subsidypayment
     } = req.body;
 
-    const newStudent = {
-      user: req.user.id,
-      daycare: req.params.daycare_id,
-      classroom: req.params.class_id,
-      firstname,
-      lastname,
-      parentname1,
-      parentname2,
-      classroomname,
-      dixontuition,
-      dixonoveragecharge,
-      parentfee,
-      subsidypayment
-    };
-
     try {
       let daycare = await Daycare.findById(req.params.daycare_id);
 
@@ -210,23 +208,53 @@ router.put(
 
       const classrooms = daycare.classrooms;
 
-      let classroom = classrooms.find(x => x.id === req.params.class_id);
+      let classroom = classrooms.find(x => x.name === classroomname);
 
       let duplicate = classroom.students.find(
         x =>
           x.firstname === firstname &&
           x.lastname === lastname &&
-          x.parentname1 === parentname1
+          x.classroomname === classroomname
       );
       if (duplicate) {
         return res.status(400).json({ msg: "Student already exists" });
       }
 
+      const castCurrency = currency => {
+        currency = currency.replace(",", "").replace("$", "");
+        currency = parseInt(currency);
+        return currency;
+      };
+
+      dixontuition = castCurrency(dixontuition);
+      dixonoveragecharge = castCurrency(dixonoveragecharge);
+      parentfee = castCurrency(parentfee);
+      subsidypayment = castCurrency(subsidypayment);
+
+      let newStudent = {
+        user: req.user.id,
+        daycare: req.params.daycare_id,
+        classroom: classroom._id,
+        firstname,
+        lastname,
+        parentname1,
+        parentname2,
+        classroomname,
+        dixontuition,
+        dixonoveragecharge,
+        parentfee,
+        subsidypayment,
+        total: 0,
+        difference: 0
+      };
+
+      newStudent.total = dixonoveragecharge + parentfee + subsidypayment;
+      newStudent.difference = dixontuition - newStudent.total;
       classroom.students.push(newStudent);
 
-      const updated = await daycare.save();
+      const updatedDaycare = await daycare.save();
 
-      return res.status(200).json(updated);
+      return res.status(200).json(updatedDaycare.classrooms);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
@@ -292,10 +320,10 @@ router.get("/:id/students", auth, async (req, res) => {
     });
 
     const compare = (a, b) => {
-      if (a.lastname < b.lastname) {
+      if (a.firstname < b.firstname) {
         return -1;
       }
-      if (a.lastname > b.lastname) {
+      if (a.firstname > b.firstname) {
         return 1;
       }
       return 0;
@@ -314,7 +342,7 @@ router.get("/:id/students", auth, async (req, res) => {
 // @desc    Delete student from classroom
 // @access  Private
 router.delete(
-  "/classrooms/:daycare_id/:class_id/:stud_id",
+  "/classrooms/students/:daycare_id/:class_id/:stud_id",
   auth,
   async (req, res) => {
     try {
@@ -357,7 +385,7 @@ router.delete(
 
       await daycare.save();
 
-      res.json({ classroom });
+      res.json(daycare.classrooms);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");

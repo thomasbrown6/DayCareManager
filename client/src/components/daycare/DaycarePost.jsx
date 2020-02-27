@@ -12,7 +12,8 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   card: {
-    display: "flex"
+    display: "flex",
+    minHeight: "241px"
   },
   cardDetails: {
     flex: 1
@@ -40,6 +41,11 @@ const DaycarePost = ({ daycare }) => {
               <Typography variant="subtitle1" color="primary" paragraph>
                 <Link className="link" to="/classrooms">
                   Classrooms: {daycare.classrooms.length}
+                </Link>
+              </Typography>
+              <Typography variant="subtitle1" color="primary" paragraph>
+                <Link className="link" to="/students">
+                  Students: 85
                 </Link>
               </Typography>
             </CardContent>

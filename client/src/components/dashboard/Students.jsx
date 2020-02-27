@@ -1,15 +1,15 @@
-import React, { useEffect, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Title from './Title';
-import { getUserDaycares } from '../../actions/daycare';
+import React, { useEffect, Fragment } from "react";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Title from "./Title";
+import { getUserDaycares } from "../../actions/daycare";
 
 const useStyles = makeStyles(theme => ({
   seeMore: {
@@ -23,7 +23,7 @@ const Students = ({ classrooms, daycare: { daycare, daycares, loaded } }) => {
     return (
       <React.Fragment>
         <Title>Students</Title>
-        <Table size='small'>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
@@ -46,14 +46,14 @@ const Students = ({ classrooms, daycare: { daycare, daycares, loaded } }) => {
           </TableBody>
         </Table>
         <div className={classes.seeMore}>
-          <Link color='text-primary' to='/all-students'>
+          <Link color="text-primary" to="/all-students">
             See all students
           </Link>
         </div>
       </React.Fragment>
     );
   } else {
-    return <React.Fragment></React.Fragment>;
+    return <div>no students</div>;
   }
 };
 

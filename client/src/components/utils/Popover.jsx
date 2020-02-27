@@ -1,14 +1,15 @@
-import React from 'react';
-import Popovercomp from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import Popovercomp from "@material-ui/core/Popover";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   popover: {
-    pointerEvents: 'none'
+    pointerEvents: "none"
   },
   paper: {
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
+    backgroundColor: "black"
   }
 }));
 
@@ -29,28 +30,28 @@ const Popover = ({ component, text }) => {
   return (
     <div>
       <Typography
-        aria-owns={open ? 'mouse-over-popover' : undefined}
-        aria-haspopup='true'
+        aria-owns={open ? "mouse-over-popover" : undefined}
+        aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
         {component}
       </Typography>
       <Popovercomp
-        id='mouse-over-popover'
-        className={classes.popover}
+        id="mouse-over-popover"
+        className={`${classes.popover}`}
         classes={{
           paper: classes.paper
         }}
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
+          vertical: "bottom",
+          horizontal: "left"
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left'
+          vertical: "top",
+          horizontal: "left"
         }}
         onClose={handlePopoverClose}
       >

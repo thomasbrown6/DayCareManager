@@ -276,7 +276,7 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Popover component={<AccountCircle />} text={"Account"} />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

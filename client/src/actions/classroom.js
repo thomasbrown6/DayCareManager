@@ -102,7 +102,7 @@ export const addClassroom = (formData, id) => async dispatch => {
 };
 
 // Add Student
-export const addStudent = formData => async dispatch => {
+export const addStudent = (formData, daycare_id) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -112,7 +112,11 @@ export const addStudent = formData => async dispatch => {
 
     //const class = await axios.get('/api');
 
-    const res = await axios.put("/api/classrooms/student", formData, config);
+    const res = await axios.put(
+      `/api/daycares/classrooms/students/${daycare_id}`,
+      formData,
+      config
+    );
 
     dispatch({
       type: UPDATE_CLASSROOM,
@@ -120,24 +124,31 @@ export const addStudent = formData => async dispatch => {
     });
 
     dispatch(setAlert("Student Added", "success"));
+    //to show it was success in the front end
+    return true;
   } catch (err) {
+    dispatch({
+      type: CLASSROOM_ERROR,
+      payload: { msg: err.response, status: err.response.status }
+    });
     const errors = err.response.data.errors;
 
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, "success")));
     }
-
-    dispatch({
-      type: CLASSROOM_ERROR,
-      payload: { msg: err.response, status: err.response.status }
-    });
   }
 };
 
 // Delete student
-export const deleteStudent = id => async dispatch => {
+export const deleteStudent = (
+  daycare_id,
+  class_id,
+  student_id
+) => async dispatch => {
   try {
-    const res = await axios.delete(`/api/classroom/student/${id}`);
+    const res = await axios.delete(
+      `/api/daycares/classrooms/students/${daycare_id}/${class_id}/${student_id}`
+    );
 
     dispatch({
       type: UPDATE_CLASSROOM,

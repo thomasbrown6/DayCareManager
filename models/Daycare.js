@@ -9,6 +9,24 @@ const DaycareSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  studentcount: {
+    type: Number
+  },
+  totaltuition: {
+    type: Number
+  },
+  totaldixonoveragecharges: {
+    type: Number
+  },
+  totalparentfees: {
+    type: Number
+  },
+  totalsubsidypayments: {
+    type: Number
+  },
+  totaltotal: {
+    type: Number
+  },
   website: {
     type: String
   },
@@ -63,7 +81,8 @@ const DaycareSchema = new mongoose.Schema({
             required: true
           },
           classroomname: {
-            type: String
+            type: String,
+            required: true
           },
           dixontuition: {
             type: Number

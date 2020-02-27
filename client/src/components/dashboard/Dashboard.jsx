@@ -110,7 +110,6 @@ const Dashboard = ({
 
     return (
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Fragment>
             <p>
@@ -133,10 +132,9 @@ const Dashboard = ({
     if (student == null) getStudentsForDaycare(daycare._id);
     return (
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
+          <h1 className="header">{daycare.company}</h1>
           <DashboardActions />
-          <h1 className="medium center">{daycare.company}</h1>
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
@@ -144,6 +142,26 @@ const Dashboard = ({
               <DaycarePost key={"post.title"} daycare={daycare} />
             </Grid>
             {/* Recent Deposits */}
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper + " tricary"}>
+                <Deposits />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper + " tricary"}>
+                <Deposits />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper + " tricary"}>
+                <Deposits />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper + " tricary"}>
+                <Deposits />
+              </Paper>
+            </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper + " tricary"}>
                 <Deposits />

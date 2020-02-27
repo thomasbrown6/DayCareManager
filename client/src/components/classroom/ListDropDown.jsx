@@ -2,15 +2,12 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import SendIcon from "@material-ui/icons/Send";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
@@ -53,10 +50,11 @@ const ListDropDown = ({ classroom, deleteClassroom, daycare: { daycare } }) => {
       key={classroom._id}
     >
       <ListItem button onClick={handleClick}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary={classroom.name} />
+        <i className="fa fa-users mr-1 text-primary"></i>
+        <ListItemText
+          primary={classroom.name}
+          secondary={`students: ${classroom.students.length}`}
+        />
         {open ? <ExpandLess /> : <ExpandMore />}
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="delete">
@@ -77,7 +75,9 @@ const ListDropDown = ({ classroom, deleteClassroom, daycare: { daycare } }) => {
                     <DeleteIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
-                <ListItemText primary={student.firstname} />
+                <ListItemText
+                  primary={`${student.firstname} ${student.lastname}`}
+                />
               </ListItem>
             );
           })}

@@ -80,7 +80,7 @@ const AddClassroom = ({ daycare: { daycare }, addClassroom }) => {
           onClick={e => onSubmit(e)}
         >
           <SaveAltIcon />
-          Add Class
+          Add Classroom
         </Fab>
       </FormControl>
     </Fragment>

@@ -23,7 +23,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         classrooms: payload,
-        loaded: true
+        loaded: false,
+        error: null
       };
 
     case GET_CLASSROOMS:
@@ -38,8 +39,7 @@ export default function(state = initialState, action) {
         ...state,
         error: payload,
         loaded: false,
-        classroom: null,
-        classrooms: null
+        classroom: null
       };
 
     case CLEAR_CLASSROOMS:
@@ -48,7 +48,7 @@ export default function(state = initialState, action) {
         ...state,
         classroom: null,
         classrooms: null,
-        loaded: true,
+        loaded: false,
         error: null
       };
 
