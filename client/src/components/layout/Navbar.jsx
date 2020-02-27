@@ -249,7 +249,7 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             <Link to="/" className="nav-item">
-              Daycare Manager
+              ChildCare Software
             </Link>
           </Typography>
 

@@ -12,7 +12,7 @@ const Home = ({ isAuthenticated }) => {
     <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
-          <h1 className="x-large">Child Care We Care</h1>
+          <h1 className="x-large">Childcare Software</h1>
           <p className="lead">
             Create a account, keep track of your daycare expenses and amount
             owed.
