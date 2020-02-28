@@ -67,13 +67,13 @@ const AddClassroom = ({ daycare: { daycare }, addClassroom }) => {
           value={name}
           onChange={e => onChange(e)}
         />
-        <TextField
+        {/* <TextField
           label="Description"
           id="standard-basic"
           name="description"
           value={description}
           onChange={e => onChange(e)}
-        />
+        /> */}
         <Fab
           variant="extended"
           className="primary"

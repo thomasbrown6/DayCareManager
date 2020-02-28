@@ -729,6 +729,16 @@ i.fa {
   margin-bottom: 2rem;
 }
 
+.dashboard-buttons {
+  padding-left: 16px;
+}
+
+button.btn-csv-download {
+  margin-top: 20px;
+  float: right;
+  margin-right: 23px;
+}
+
 @media (min-width: 600px) {
   .dashboardactions {
     padding-left: 24px;

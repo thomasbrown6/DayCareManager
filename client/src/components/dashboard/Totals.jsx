@@ -32,12 +32,7 @@ export default function Totals(props) {
         on {moment(props.date).format("DD MMMM, YYYY")}
       </Typography>
       <div>
-        <Link
-          color="text-primary"
-          to={props.link}
-          onClick={preventDefault}
-          className="underline"
-        >
+        <Link color="text-primary" to={props.link} className="underline">
           View more
         </Link>
       </div>
