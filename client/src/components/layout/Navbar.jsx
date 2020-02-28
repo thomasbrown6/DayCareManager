@@ -200,7 +200,7 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
           color="inherit"
           containerElement={<Link to="/" />}
         >
-          <Badge badgeContent={4} color="secondary">
+          <Badge badgeContent={0} color="secondary">
             <HomeWork />
           </Badge>
         </IconButton>
@@ -208,7 +208,7 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={10} color="secondary">
+          <Badge badgeContent={0} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -247,7 +247,11 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography
+            className={classes.title + " nav-header"}
+            variant="h6"
+            noWrap
+          >
             <Link to="/" className="nav-item">
               Childcare Software
             </Link>
@@ -256,12 +260,12 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={0} color="secondary">
                 <Popover component={<MailIcon />} text={"New message"} />
               </Badge>
             </IconButton>
             <IconButton aria-label="show 16 new notifications" color="inherit">
-              <Badge badgeContent={16} color="secondary">
+              <Badge badgeContent={0} color="secondary">
                 <Popover
                   component={<NotificationsIcon />}
                   text={"Notifications"}
@@ -312,22 +316,34 @@ const Navbar = ({ auth: { isAuthenticated, loaded }, logout }) => {
         </div>
         <Divider />
         <List>
-          <ListItem button component={Link} to="/expenses" key={0}>
+          <ListItem button component={Link} to="/dashboard" key={0}>
             <ListItemIcon>
-              <Popover component={<AccountBalance />} text={"Expenses"} />
+              <Popover component={<HomeWork />} text={"Dashboard"} />
+            </ListItemIcon>
+            <ListItemText primary={"Dashboard"} />
+          </ListItem>
+          <ListItem button component={Link} to="/expenses" key={1}>
+            <ListItemIcon>
+              <Popover
+                component={<i className="fa fa-money text-primary"></i>}
+                text={"Expenses"}
+              />
             </ListItemIcon>
             <ListItemText primary={"Expenses"} />
-          </ListItem>
-          <ListItem button component={Link} to="/" key={1}>
-            <ListItemIcon>
-              <Popover component={<HomeWork />} text={"Daycares"} />
-            </ListItemIcon>
-            <ListItemText primary={"Daycares"} />
           </ListItem>
         </List>
         <Divider />
         <List>
-          <ListItem button component={Link} to="/" key={2}>
+          <ListItem button component={Link} to="/classrooms" key={2}>
+            <ListItemIcon>
+              <Popover
+                component={<i className="fa fa-users text-primary"></i>}
+                text={"Classrooms"}
+              />
+            </ListItemIcon>
+            <ListItemText primary={"Classrooms"} />
+          </ListItem>
+          <ListItem button component={Link} to="/students" key={2}>
             <ListItemIcon>
               <Popover component={<SportsKabaddi />} text={"Kids"} />
             </ListItemIcon>

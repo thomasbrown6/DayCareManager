@@ -15,7 +15,7 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
 import Container from "@material-ui/core/Container";
-import { getUserDaycares } from "../../actions/daycare";
+import { getUserDaycareDetails } from "../../actions/daycare";
 import { getClassroomById, deleteClassroom } from "../../actions/classroom";
 import { deleteStudent } from "../../actions/classroom";
 import { getStudentsByDaycare } from "../../actions/classroom";
@@ -23,6 +23,7 @@ import { getClassroomsByDaycare } from "../../actions/classroom";
 import AddStudent from "./AddStudent";
 import StudentListDropdown from "./StudentListDropdown";
 import DashboardActions from "../dashboard/DashboardActions";
+import Copyright from "../layout/Copyright";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 const Students = ({
   student: { students, loaded },
-  getUserDaycares,
+  getUserDaycareDetails,
   deleteStudent,
   getStudentsByDaycare,
   getClassroomsByDaycare,
@@ -47,8 +48,8 @@ const Students = ({
   classroom
 }) => {
   useEffect(() => {
-    getUserDaycares();
-  }, [getUserDaycares]);
+    getUserDaycareDetails();
+  }, [getUserDaycareDetails]);
 
   if (
     (daycare != null && Array.isArray(students) && !loaded) ||
@@ -62,6 +63,11 @@ const Students = ({
     <Fragment>
       <h1 className="header">Students</h1>
       <DashboardActions />
+      {!Array.isArray(students) ? (
+        <h2>No classrooms, use the form to add classrooms</h2>
+      ) : (
+        ""
+      )}
       <div className="w-100 wrapper">
         <Container className="ft-l" maxWidth="sm">
           <div>
@@ -87,7 +93,7 @@ const Students = ({
 
 Students.propTypes = {
   getClassroomById: PropTypes.func.isRequired,
-  getUserDaycares: PropTypes.func.isRequired,
+  getUserDaycareDetails: PropTypes.func.isRequired,
   getStudentsByDaycare: PropTypes.func.isRequired,
   getClassroomsByDaycare: PropTypes.func.isRequired,
   deleteClassroom: PropTypes.func.isRequired,
@@ -107,7 +113,7 @@ export default connect(mapStateToProps, {
   getClassroomById,
   deleteClassroom,
   deleteStudent,
-  getUserDaycares,
+  getUserDaycareDetails,
   getClassroomsByDaycare,
   getStudentsByDaycare
 })(Students);

@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import "./mediaqueries.css";
 import "./App.css";
 
 import Home from "./components/layout/Home";
@@ -14,11 +15,11 @@ import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
 import CreateDaycare from "./components/daycare-forms/CreateDaycare";
 import Daycare from "./components/daycare/Daycare";
-import AllStudents from "./components/student/AllStudents";
 import Classrooms from "./components/classroom/Classrooms";
 import Expenses from "./components/expenses/Expenses";
 import Students from "./components/student/Students";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import Copyright from "./components/layout/Copyright";
 
 //Redux
 import { Provider } from "react-redux";
@@ -41,7 +42,7 @@ const App = () => {
         <Fragment>
           <Navbar />
           <Route exact path="/" component={Home} />
-          <section className="container">
+          <section className={`container main-container`}>
             <Alert />
             <Switch>
               <Route exact path="/register" component={Register} />

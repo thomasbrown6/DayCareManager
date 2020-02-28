@@ -46,7 +46,7 @@ const StudentListDropdown = ({
     deleteStudent(daycare._id, class_id, student_id);
   };
 
-  var formatter = new Intl.NumberFormat("en-US", {
+  const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD"
   });

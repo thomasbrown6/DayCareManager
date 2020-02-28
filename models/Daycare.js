@@ -34,7 +34,11 @@ const DaycareSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  date: {
+  createdate: {
+    type: Date,
+    default: Date.now
+  },
+  recentdate: {
     type: Date,
     default: Date.now
   },

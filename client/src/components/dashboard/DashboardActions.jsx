@@ -17,7 +17,7 @@ const DashboardActions = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root + " dashboard-buttons"}>
       <Button variant="outlined">
         <Link to="/dashboard" className="text-primary">
           <i className="fa fa-home text-primary"></i>Dashboard

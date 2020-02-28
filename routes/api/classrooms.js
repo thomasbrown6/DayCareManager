@@ -182,7 +182,8 @@ router.put(
     ]
   ],
   async (req, res) => {
-    const errors = validationResult(req);
+    let errors = [];
+    errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -217,7 +218,8 @@ router.put(
           x.classroomname === classroomname
       );
       if (duplicate) {
-        return res.status(400).json({ msg: "Student already exists" });
+        let dublicateerror = [{ msg: "Student already exists" }];
+        return res.status(400).json({ errors: dublicateerror });
       }
 
       const castCurrency = currency => {

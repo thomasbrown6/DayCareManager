@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import List from "@material-ui/core/List";
 import Container from "@material-ui/core/Container";
-import { getUserDaycares } from "../../actions/daycare";
+import { getUserDaycareDetails } from "../../actions/daycare";
 import { getClassroomById, deleteClassroom } from "../../actions/classroom";
 import { getClassroomsByDaycare } from "../../actions/classroom";
 import DashboardActions from "../dashboard/DashboardActions";
@@ -13,13 +13,13 @@ import ListDropDown from "./ListDropDown";
 
 const Classrooms = ({
   classroom: { classrooms, loaded },
-  getUserDaycares,
+  getUserDaycareDetails,
   getClassroomsByDaycare,
   daycare: { daycare }
 }) => {
   useEffect(() => {
-    getUserDaycares();
-  }, [getUserDaycares]);
+    getUserDaycareDetails();
+  }, [getUserDaycareDetails]);
   if (daycare != null && !loaded) {
     getClassroomsByDaycare(daycare._id);
   }
@@ -51,7 +51,9 @@ const Classrooms = ({
   } else {
     return (
       <Fragment>
-        <h3>Add classrooms</h3>
+        <h1 className="header">Classrooms</h1>
+        <DashboardActions />
+        <h2>No classrooms, use the form to add classrooms</h2>
         <AddClassroom />
       </Fragment>
     );
@@ -60,7 +62,7 @@ const Classrooms = ({
 
 Classrooms.propTypes = {
   getClassroomById: PropTypes.func.isRequired,
-  getUserDaycares: PropTypes.func.isRequired,
+  getUserDaycareDetails: PropTypes.func.isRequired,
   getClassroomsByDaycare: PropTypes.func.isRequired,
   deleteClassroom: PropTypes.func.isRequired,
   classroom: PropTypes.object.isRequired,
@@ -75,7 +77,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getClassroomById,
   deleteClassroom,
-  getUserDaycares,
+  getUserDaycareDetails,
   getClassroomsByDaycare
 })(Classrooms);
 

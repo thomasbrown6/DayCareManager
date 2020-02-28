@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -278,7 +278,7 @@ export default function EnhancedTable({ students }) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -356,67 +356,73 @@ export default function EnhancedTable({ students }) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={students.length}
+              rowCount={students ? students.length : 0}
             />
             <TableBody>
-              {stableSort(students, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((student, index) => {
-                  const isItemSelected = isSelected(student.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+              {students && (
+                <Fragment>
+                  {stableSort(students, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((student, index) => {
+                      const isItemSelected = isSelected(student.name);
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
+                      return (
+                        <TableRow
+                          hover
+                          onClick={event => handleClick(event, student.name)}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={student.firstname + student.lastname}
+                          selected={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              inputProps={{ "aria-labelledby": labelId }}
+                            />
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            id={labelId}
+                            scope="row"
+                            padding="none"
+                          >
+                            {student.firstname + " " + student.lastname}
+                          </TableCell>
+                          <TableCell align="middle">
+                            {student.classroomname}
+                          </TableCell>
+                          <TableCell align="middle">
+                            {formatter.format(student.dixontuition)}
+                          </TableCell>
+                          <TableCell align="middle">
+                            {formatter.format(student.dixonoveragecharge)}
+                          </TableCell>
+                          <TableCell align="middle">
+                            {formatter.format(student.parentfee)}
+                          </TableCell>
+                          <TableCell align="middle">
+                            {formatter.format(student.subsidypayment)}
+                          </TableCell>
+                          <TableCell align="middle">
+                            {formatter.format(student.total)}
+                          </TableCell>
+                          <TableCell align="middle">
+                            {formatter.format(student.difference)}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
                     <TableRow
-                      hover
-                      onClick={event => handleClick(event, student.name)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={student.firstname + student.lastname}
-                      selected={isItemSelected}
+                      style={{ height: (!dense ? 33 : 53) * emptyRows }}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {student.firstname + " " + student.lastname}
-                      </TableCell>
-                      <TableCell align="middle">
-                        {student.classroomname}
-                      </TableCell>
-                      <TableCell align="middle">
-                        {formatter.format(student.dixontuition)}
-                      </TableCell>
-                      <TableCell align="middle">
-                        {formatter.format(student.dixonoveragecharge)}
-                      </TableCell>
-                      <TableCell align="middle">
-                        {formatter.format(student.parentfee)}
-                      </TableCell>
-                      <TableCell align="middle">
-                        {formatter.format(student.subsidypayment)}
-                      </TableCell>
-                      <TableCell align="middle">
-                        {formatter.format(student.total)}
-                      </TableCell>
-                      <TableCell align="middle">
-                        {formatter.format(student.difference)}
-                      </TableCell>
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (!dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
+                  )}
+                </Fragment>
               )}
             </TableBody>
           </Table>
@@ -424,7 +430,7 @@ export default function EnhancedTable({ students }) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={students.length}
+          count={students ? students.length : 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

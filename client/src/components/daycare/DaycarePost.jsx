@@ -45,7 +45,7 @@ const DaycarePost = ({ daycare }) => {
               </Typography>
               <Typography variant="subtitle1" color="primary" paragraph>
                 <Link className="link" to="/students">
-                  Students: 85
+                  Students: {daycare.studentcount}
                 </Link>
               </Typography>
             </CardContent>

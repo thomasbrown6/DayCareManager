@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import List from "@material-ui/core/List";
 import Container from "@material-ui/core/Container";
-import { getUserDaycares } from "../../actions/daycare";
+import { getUserDaycareDetails } from "../../actions/daycare";
 import { getClassroomById, deleteClassroom } from "../../actions/classroom";
 import { getStudentsByDaycare } from "../../actions/classroom";
 import DashboardActions from "../dashboard/DashboardActions";
@@ -13,13 +13,13 @@ import DataTable from "../table/DataTable";
 const Expenses = ({
   classroom: { classrooms },
   student: { students, loaded },
-  getUserDaycares,
+  getUserDaycareDetails,
   getStudentsByDaycare,
   daycare: { daycare }
 }) => {
   useEffect(() => {
-    getUserDaycares();
-  }, [getUserDaycares]);
+    getUserDaycareDetails();
+  }, [getUserDaycareDetails]);
 
   if (daycare != null && Array.isArray(students) && !loaded) {
     getStudentsByDaycare(daycare._id);
@@ -37,7 +37,7 @@ const Expenses = ({
 
 Expenses.propTypes = {
   getClassroomById: PropTypes.func.isRequired,
-  getUserDaycares: PropTypes.func.isRequired,
+  getUserDaycareDetails: PropTypes.func.isRequired,
   getStudentsByDaycare: PropTypes.func.isRequired,
   deleteClassroom: PropTypes.func.isRequired,
   classroom: PropTypes.object.isRequired,
@@ -54,6 +54,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getClassroomById,
   deleteClassroom,
-  getUserDaycares,
+  getUserDaycareDetails,
   getStudentsByDaycare
 })(Expenses);

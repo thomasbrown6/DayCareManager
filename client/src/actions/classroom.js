@@ -47,13 +47,10 @@ export const getStudentsByDaycare = id => async dispatch => {
 
 // Get classroom by Id
 export const getClassroomById = (daycare_id, class_id) => async dispatch => {
-  console.log(`GET: /api/daycares/classrooms/${daycare_id}/${class_id}`);
   try {
     const res = await axios.get(
       `/api/daycares/classrooms/${daycare_id}/${class_id}`
     );
-
-    console.log(`Response: ${res.data}`);
 
     dispatch({
       type: GET_CLASSROOM,
@@ -127,12 +124,14 @@ export const addStudent = (formData, daycare_id) => async dispatch => {
     //to show it was success in the front end
     return true;
   } catch (err) {
+    console.log("error hit: " + err);
     dispatch({
       type: CLASSROOM_ERROR,
       payload: { msg: err.response, status: err.response.status }
     });
     const errors = err.response.data.errors;
 
+    console.log("should send alert " + err.response.msg);
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, "success")));
     }

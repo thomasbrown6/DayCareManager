@@ -4,35 +4,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
 import DashboardActions from "./DashboardActions";
-import Daycare from "./Daycare";
-import { getUserDaycares, deleteDaycare } from "../../actions/daycare";
+import { getUserDaycareDetails, deleteDaycare } from "../../actions/daycare";
 import { getStudentsForDaycare } from "../../actions/student";
 import { getClassroomsByDaycare } from "../../actions/classroom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
+import Totals from "./Totals";
 import Students from "./Students";
 import DaycarePost from "../daycare/DaycarePost";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" to="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -77,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: "100vh",
+    height: "105vh",
     overflow: "auto"
   },
   fixedHeight: {
@@ -86,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Dashboard = ({
-  getUserDaycares,
+  getUserDaycareDetails,
   deleteDaycare,
   getStudentsForDaycare,
   getClassroomsByDaycare,
@@ -96,8 +78,8 @@ const Dashboard = ({
   student
 }) => {
   useEffect(() => {
-    getUserDaycares();
-  }, [getUserDaycares]);
+    getUserDaycareDetails();
+  }, [getUserDaycareDetails]);
 
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -105,24 +87,24 @@ const Dashboard = ({
   if (!loaded && daycares == null) {
     return <Spinner />;
   } else if ((loaded && daycares == null) || daycare == null) {
-    getUserDaycares();
+    getUserDaycareDetails();
     if (daycare != null) getClassroomsByDaycare(daycare._id);
 
     return (
       <main className={classes.content}>
-        <Container maxWidth="lg" className={classes.container}>
-          <Fragment>
-            <p>
+        <Container
+          maxWidth="lg"
+          className={classes.container + " Dashboard-container"}
+        >
+          <div className="center">
+            <h1 className="header">
               You have not yet set up any daycare centers yet, please add one to
               get started
-            </p>
+            </h1>
             <Link to="/create-daycare" className="btn btn-primary my-1">
               Create Daycare
             </Link>
-          </Fragment>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+          </div>
         </Container>
       </main>
     );
@@ -132,7 +114,10 @@ const Dashboard = ({
     if (student == null) getStudentsForDaycare(daycare._id);
     return (
       <main className={classes.content}>
-        <Container maxWidth="lg" className={classes.container}>
+        <Container
+          maxWidth="lg"
+          className={classes.container + " Dashboard-container"}
+        >
           <h1 className="header">{daycare.company}</h1>
           <DashboardActions />
           <Grid container spacing={3}>
@@ -141,30 +126,55 @@ const Dashboard = ({
               {/* <Chart /> */}
               <DaycarePost key={"post.title"} daycare={daycare} />
             </Grid>
-            {/* Recent Deposits */}
+            {/* Recent Totals */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper + " tricary"}>
-                <Deposits />
+                <Totals
+                  title="Tuition"
+                  amount={daycare.totaltuition}
+                  date={daycare.recentdate}
+                  link="/expenses"
+                />
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper + " tricary"}>
-                <Deposits />
+                <Totals
+                  title="Parent Fees"
+                  amount={daycare.totalparentfees}
+                  date={daycare.recentdate}
+                  link="/expenses"
+                />
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper + " tricary"}>
-                <Deposits />
+                <Totals
+                  title="Dixon Overage Charges"
+                  amount={daycare.totaldixonoveragecharges}
+                  date={daycare.recentdate}
+                  link="/expenses"
+                />
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper + " tricary"}>
-                <Deposits />
+                <Totals
+                  title="Subsidy Payments"
+                  amount={daycare.totalsubsidypayments}
+                  date={daycare.recentdate}
+                  link="/expenses"
+                />
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper + " tricary"}>
-                <Deposits />
+                <Totals
+                  title="Totals"
+                  amount={daycare.totaltotal}
+                  date={daycare.recentdate}
+                  link="/expenses"
+                />
               </Paper>
             </Grid>
             {/* Students */}
@@ -176,9 +186,6 @@ const Dashboard = ({
               )}
             </Grid>
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
         </Container>
       </main>
     );
@@ -186,7 +193,7 @@ const Dashboard = ({
 };
 
 Dashboard.propTypes = {
-  getUserDaycares: PropTypes.func.isRequired,
+  getUserDaycareDetails: PropTypes.func.isRequired,
   deleteDaycare: PropTypes.func.isRequired,
   getStudentsForDaycare: PropTypes.func.isRequired,
   getClassroomsByDaycare: PropTypes.func.isRequired,
@@ -202,7 +209,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getUserDaycares,
+  getUserDaycareDetails,
   deleteDaycare,
   getStudentsForDaycare,
   getClassroomsByDaycare

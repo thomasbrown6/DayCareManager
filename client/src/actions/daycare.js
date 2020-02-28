@@ -34,6 +34,25 @@ export const getUserDaycares = () => async dispatch => {
   }
 };
 
+// Get users daycares
+export const getUserDaycareDetails = () => async dispatch => {
+  try {
+    const res = await axios.get("/api/daycares/me/details");
+
+    dispatch({
+      type: GET_DAYCARES,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({ type: CLEAR_DAYCARE });
+
+    dispatch({
+      type: DAYCARE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 // Get all daycares
 export const getDaycares = () => async dispatch => {
   dispatch({ type: CLEAR_DAYCARE });

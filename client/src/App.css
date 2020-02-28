@@ -13,12 +13,17 @@
   --highlight-color: #ce1f1f;
   --babyblue: rgb(23, 162, 184);
   --font-color: #fff;
+  --required: red;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+#root {
+  padding-top: 80px;
 }
 
 html {
@@ -32,6 +37,12 @@ body {
   background-color: #343a40 !important;
   color: var(--font-color);
 }
+
+/* #root {
+  position: relative;
+  background: url("./img/daycare_bg.jpg") no-repeat center center/cover;
+  height: 100vh;
+} */
 
 header.MuiAppBar-colorPrimary {
   background-color: var(--tricary-color);
@@ -80,6 +91,19 @@ button.MuiButton-containedPrimary:hover {
   background-color: var(--tricary-color);
 }
 
+button.MuiButton-textSecondary {
+  color: var(--tricary-color);
+}
+
+button.MuiButton-textSecondary:hover {
+  background-color: var(--secondary-color);
+  opacity: 0.8;
+}
+
+.underline:hover {
+  text-decoration: underline;
+}
+
 fieldset.MuiOutlinedInput-notchedOutline:hover {
   border-color: var(--primary-color);
 }
@@ -121,10 +145,6 @@ span.MuiTableSortLabel-root,
 th.MuiTableCell-body,
 td.MuiTableCell-body {
   color: var(--font-color) !important;
-}
-
-div.MuiTableContainer-root {
-  min-height: 400px;
 }
 
 /* Material button*/
@@ -209,8 +229,6 @@ ul.MuiList-root > li.MuiListItem-root {
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
-  margin-top: 6rem;
-  margin-bottom: 3rem;
 }
 
 .ft-l {
@@ -265,6 +283,14 @@ label.MuiInputLabel-root {
   text-align: center;
 }
 
+.obj-center {
+  margin: 0 auto;
+}
+
+.required {
+  color: var(--required);
+}
+
 .text-primary {
   color: var(--font-color);
 }
@@ -292,6 +318,10 @@ label.MuiInputLabel-root {
 
 .tricary {
   background: var(--tricary-color);
+}
+
+.hide {
+  display: none;
 }
 
 /* Border */
@@ -609,6 +639,12 @@ i.fa {
   position: relative;
   background: url("./img/daycare_bg.jpg") no-repeat center center/cover;
   height: 100vh;
+}
+
+.hide-size {
+  margin: 0;
+  max-width: 0;
+  padding: 0;
 }
 
 .landing-inner {

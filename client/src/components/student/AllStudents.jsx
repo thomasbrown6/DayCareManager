@@ -1,35 +1,35 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Spinner from '../layout/Spinner';
-import Daycare from '../../components/daycare/Daycare';
-import { getUserDaycares, deleteDaycare } from '../../actions/daycare';
+import React, { Fragment, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Spinner from "../layout/Spinner";
+import Daycare from "../../components/daycare/Daycare";
+import { getUserDaycareDetails, deleteDaycare } from "../../actions/daycare";
 
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Title from '../dashboard/Title';
-import EditIcon from '@material-ui/icons/Edit';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import CancelIcon from '@material-ui/icons/CancelOutlined';
-import EditTable from './EditTable';
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Title from "../dashboard/Title";
+import EditIcon from "@material-ui/icons/Edit";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import CancelIcon from "@material-ui/icons/CancelOutlined";
+import EditTable from "./EditTable";
 
 const Copyright = () => {
   return (
-    <Typography variant='body2' color='textSecondary' align='center'>
-      {'Copyright © '}
-      <Link color='inherit' href='https://material-ui.com/'>
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://material-ui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 };
@@ -41,35 +41,35 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column'
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column"
   },
   content: {
     flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto'
+    height: "100vh",
+    overflow: "auto"
   }
 }));
 
 const AllStudents = ({
-  getUserDaycares,
+  getUserDaycareDetails,
   deleteDaycare,
   auth: { user },
   daycare: { daycare, daycares, loaded }
 }) => {
   useEffect(() => {
-    getUserDaycares();
-  }, [getUserDaycares]);
+    getUserDaycareDetails();
+  }, [getUserDaycareDetails]);
 
   const classes = useStyles();
-  if (daycare == null) getUserDaycares();
+  if (daycare == null) getUserDaycareDetails();
 
   return !loaded && (daycares == null || daycare == null) ? (
     <Spinner />
   ) : (
     <main className={classes.content}>
-      <Container maxWidth='lg' className={classes.container}>
+      <Container maxWidth="lg" className={classes.container}>
         {/* <Title>Students</Title>
             <Table size='large'>
               <TableHead>
@@ -101,7 +101,7 @@ const AllStudents = ({
 };
 
 AllStudents.propTypes = {
-  getUserDaycares: PropTypes.func.isRequired,
+  getUserDaycareDetails: PropTypes.func.isRequired,
   deleteDaycare: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   daycare: PropTypes.object.isRequired,
@@ -114,6 +114,7 @@ const mapStateToProps = state => ({
   classrooms: state.classrooms
 });
 
-export default connect(mapStateToProps, { getUserDaycares, deleteDaycare })(
-  AllStudents
-);
+export default connect(mapStateToProps, {
+  getUserDaycareDetails,
+  deleteDaycare
+})(AllStudents);

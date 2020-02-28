@@ -97,9 +97,10 @@ const AddStudent = ({ addStudent, classrooms, daycare, error }) => {
   return (
     <Fragment>
       <FormControl
-        className={classes.formControl + " ft-r"}
+        className={classes.formControl + " ft-r add-form"}
         onSubmit={e => onSubmit(e)}
       >
+        <h2>New Student</h2>
         <TextField
           label="First Name"
           id="standard-basic"

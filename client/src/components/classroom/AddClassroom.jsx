@@ -56,9 +56,10 @@ const AddClassroom = ({ daycare: { daycare }, addClassroom }) => {
   return (
     <Fragment>
       <FormControl
-        className={classes.formControl + " ft-r"}
+        className={classes.formControl + " ft-r add-form"}
         onSubmit={e => onSubmit(e)}
       >
+        <h2>New Classroom</h2>
         <TextField
           label="Class Name"
           id="standard-basic"
