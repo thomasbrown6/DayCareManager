@@ -168,6 +168,34 @@ export const deleteStudent = (
   }
 };
 
+// Delete student
+export const getStudent = (
+  daycare_id,
+  class_id,
+  student_id
+) => async dispatch => {
+  try {
+    const res = await axios.get(
+      `/api/daycares/classrooms/students/${daycare_id}/${class_id}/${student_id}`
+    );
+
+    dispatch({
+      type: UPDATE_CLASSROOM,
+      payload: res.data
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "success")));
+    }
+    dispatch({
+      type: CLASSROOM_ERROR,
+      payload: { msg: err.response, status: err.response.status }
+    });
+  }
+};
+
 // Delete classroom
 export const deleteClassroom = (daycareId, classId) => async dispatch => {
   if (window.confirm("Are you sure you want to delete your classroom?")) {

@@ -18,6 +18,8 @@ import Daycare from "./components/daycare/Daycare";
 import Classrooms from "./components/classroom/Classrooms";
 import Expenses from "./components/expenses/Expenses";
 import Students from "./components/student/Students";
+import Student from "./components/student/Student";
+import Account from "./components/profile/Account";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import Copyright from "./components/layout/Copyright";
 
@@ -61,6 +63,8 @@ const App = () => {
                 component={CreateDaycare}
               />
               <PrivateRoute exact path="/students" component={Students} />
+              <PrivateRoute exact path="/student/:id" component={Student} />
+              <PrivateRoute exact path="/myaccount" component={Account} />
             </Switch>
           </section>
         </Fragment>

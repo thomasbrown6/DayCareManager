@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -14,6 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import CurrencyFormat from "react-currency-format";
+import EditIcon from "@material-ui/icons/Edit";
 
 import { deleteStudent } from "../../actions/classroom";
 
@@ -46,6 +48,11 @@ const StudentListDropdown = ({
     deleteStudent(daycare._id, class_id, student_id);
   };
 
+  const editStudent = (e, class_id, student_id) => {
+    e.preventDefault();
+    deleteStudent(daycare._id, class_id, student_id);
+  };
+
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD"
@@ -69,6 +76,11 @@ const StudentListDropdown = ({
               aria-label="delete"
             >
               <DeleteIcon />
+            </IconButton>
+            <IconButton edge="end" aria-label="edit">
+              <Link to={`/student/${student._id}`}>
+                <EditIcon />
+              </Link>
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>

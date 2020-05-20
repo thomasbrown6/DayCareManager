@@ -1,23 +1,23 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const auth = require('../../middleware/auth');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const { check, validationResult } = require('express-validator');
+const bcrypt = require("bcryptjs");
+const auth = require("../../middleware/auth");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const { check, validationResult } = require("express-validator");
 
-const User = require('../../models/User');
+const User = require("../../models/User");
 
 // @route   GET api/auth
 // @desc    Test route
 // @access  Public
-router.get('/', auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select("-password");
     res.json(user);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
@@ -25,10 +25,10 @@ router.get('/', auth, async (req, res) => {
 // @desc    Authenticate user and get token
 // @access  Public
 router.post(
-  '/',
+  "/",
   [
-    check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required').exists()
+    check("email", "Please include a valid email").isEmail(),
+    check("password", "Password is required").exists()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -45,7 +45,7 @@ router.post(
       if (!user) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Did not find a user by that email' }] });
+          .json({ errors: [{ msg: "Did not find a user by that email" }] });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
@@ -55,7 +55,7 @@ router.post(
           errors: [
             {
               msg:
-                'Wrong password. Try again or click Forgot password to reset it.'
+                "Wrong password. Try again or click Forgot password to reset it."
             }
           ]
         });
@@ -71,7 +71,7 @@ router.post(
       //const configdata = config.get('jwtSecret');
       jwt.sign(
         payload,
-        'mysecrettoken',
+        "mysecrettoken",
         { expiresIn: 3600 },
         (error, token) => {
           if (error) throw error;
@@ -80,7 +80,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error: ' + err.message);
+      res.status(500).send("Server error: " + err.message);
     }
   }
 );
